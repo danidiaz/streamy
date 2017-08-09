@@ -44,7 +44,7 @@ signatures and bridge modules.
 
 ## Building instructions
 
-I'm using cabal-install 2.0.
+I'm using [cabal-install](http://hackage.haskell.org/package/cabal-install) 2.0.
 
 I'm trying to build with
 
