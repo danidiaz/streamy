@@ -1,0 +1,3 @@
+signature Control.Monad.Trans.Stream where
+
+data Stream o m r
