@@ -44,7 +44,7 @@ signatures and bridge modules.
 
 ## Explanation of the "mixins" stanza
 
-In the package.cabal of stream-t-testsuite, we find the following:
+In the package.cabal of the stream-t-testsuite, we find the following:
 
 ```
 mixins:
