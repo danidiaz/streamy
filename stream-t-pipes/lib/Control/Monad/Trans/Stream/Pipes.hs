@@ -1,9 +1,9 @@
-module Control.Monad.Trans.Stream.Pipes () where
+module Control.Monad.Trans.Stream.Pipes (Stream,yield) where
 
-import Pipes (Producer)
+import Pipes (Proxy,X)
 import qualified Pipes as P
 
-type Stream o m r = Producer o m r
+type Stream = Proxy X () ()
 
 yield :: Monad m => o -> Stream o m ()
 yield = P.yield

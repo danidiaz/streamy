@@ -7,8 +7,8 @@ import Control.Monad.Morph
 
 data Stream :: * -> (* -> *) -> * -> *
 
-instance Monad (Stream o m)
+instance Monad m => Monad (Stream o m)
 instance MonadTrans (Stream o)
 instance MFunctor (Stream o) 
 
-yield :: o -> Stream o m ()
+yield :: Monad m => o -> Stream o m ()

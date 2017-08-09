@@ -1,2 +1,4 @@
 packages: stream-t-sig/
           stream-t-pipes/ 
+          stream-t-testsuite/ 
+
