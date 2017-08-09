@@ -1,3 +1,14 @@
+{-# LANGUAGE KindSignatures #-}
 signature Control.Monad.Trans.Stream where
 
-data Stream o m r
+import Control.Monad
+import Control.Monad.Trans.Class
+import Control.Monad.Morph
+
+data Stream :: * -> (* -> *) -> * -> *
+
+instance Monad (Stream o m)
+instance MonadTrans (Stream o)
+instance MFunctor (Stream o) 
+
+yield :: o -> Stream o m ()

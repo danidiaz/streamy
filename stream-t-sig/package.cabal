@@ -1,4 +1,4 @@
-name:                str-sig
+name:                stream-t-sig
 version:             0.1.0.0
 synopsis:            Signature package for effectful streams.
 description:         See <https://wiki.haskell.org/Module_signature>
@@ -6,13 +6,15 @@ license:             MIT
 license-file:        LICENSE
 author:              Daniel Díaz
 maintainer:          diaz_carrete@yahoo.com
-category:            Signature
+category:            Signature, Streaming
 build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
 cabal-version:       >= 2
 
 library
   signatures:          Control.Monad.Trans.Stream
-  build-depends:       base >= 4.10 && < 4.11
+  build-depends:       base >= 4.10 && < 4.11   ,
+                       transformers > 0.5       ,
+                       mmorph
   hs-source-dirs:      sig
   default-language:    Haskell2010
