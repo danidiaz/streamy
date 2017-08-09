@@ -2,10 +2,12 @@
 
 ## What's this
 
-I'm trying to use the Backpack module system to give a common interface to the
-main streaming libraries of Haskell: conduit, pipes, streaming. (Inspired by
-how [str-sig](http://next.hackage.haskell.org:8080/package/str-sig) gives a
-common interface to String-like types.)
+As a learning exercise, I'm trying to use the
+[Backpack](https://github.com/ezyang/ghc-proposals/blob/backpack/proposals/0000-backpack.rst)
+module system to give a common interface to the main streaming libraries of
+Haskell: [conduit](http://hackage.haskell.org/package/conduit), [pipes](http://hackage.haskell.org/package/pipes), [streaming](http://hackage.haskell.org/package/streaming). (Inspired by how
+[str-sig](http://next.hackage.haskell.org:8080/package/str-sig) gives a common
+interface to String-like types.)
 
 The idea is that the abstract signature would cover some very basic
 functionality like yielding stuff downstream, but not library-specific features
@@ -14,11 +16,11 @@ like:
 - pipe's bidirectionality.
 - conduit's integrated leftovers.
 - streaming's ability to use different functors.
-- any kind of single-stepping (too different 
+- any kind of single-stepping (too different across libraries).
 
 Things that *perhaps* could get included:
 
-- applicative sinks.
+- applicative sinks?
 - grouping operations?
 
 ## Structure of this project 
