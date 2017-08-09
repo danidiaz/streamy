@@ -42,6 +42,33 @@ types line up.
 The advantage of these premade packages is not having to invent your own
 signatures and bridge modules.
 
+## Explanation of the "mixins" stanza
+
+In the package.cabal of stream-t-testsuite, we find the following:
+
+```
+mixins:
+    stream-t-sig requires (Control.Monad.Trans.Stream as Control.Monad.Trans.Stream.Test.Pipes),
+    stream-t-pipes (Control.Monad.Trans.Stream.Pipes as Control.Monad.Trans.Stream.Test.Pipes)
+```
+
+What is happening here?
+
+From a Backpack perspective, libraries provide modules but also have "holes"
+(the signatures defined and/or used in the library). Libraries that only have
+signatures can be seen as "nothing but holes", in a sense.
+
+The lines of the mixins stanza create aliases for both modules and signatures
+(signatures are aliased with "requires"). 
+
+Backpack works by lining up signatures and implementation modules by name, and
+then checking that they fit together.
+
+For simple cases, it is often enough to simply "slide" an implementation module
+into the signature, and not alias the signature at all. Here we are not doing
+that; my plan is have multiple aliases of the signature and instantiate each
+one differently.
+
 ## Building instructions
 
 I'm using [cabal-install](http://hackage.haskell.org/package/cabal-install) 2.0.
