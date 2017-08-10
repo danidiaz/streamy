@@ -1,13 +1,15 @@
 {-# LANGUAGE KindSignatures #-}
-signature Control.Monad.Trans.Stream where
+signature Streamy where
 
 import Control.Monad
 import Control.Monad.Trans.Class
+import Control.Monad.IO.Class
 import Control.Monad.Morph
 
 data Stream :: * -> (* -> *) -> * -> *
 
 instance Monad m => Monad (Stream o m)
+instance MonadIO => MonadIO (Stream o m) 
 instance MonadTrans (Stream o)
 instance MFunctor (Stream o) 
 

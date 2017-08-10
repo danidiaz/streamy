@@ -1,20 +1,19 @@
-name:                stream-t-sig
+name:                streamy-pipes
 version:             0.1.0.0
-synopsis:            Signature package for effectful streams.
+synopsis:            Pipes implementation of the streamy signature.
 description:         See <https://wiki.haskell.org/Module_signature>
 license:             MIT
 license-file:        LICENSE
 author:              Daniel Díaz
 maintainer:          diaz_carrete@yahoo.com
-category:            Signature, Streaming
+category:            Streaming
 build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
 cabal-version:       >= 2
 
 library
-  signatures:          Control.Monad.Trans.Stream
+  exposed-modules:     Streamy.Pipes
   build-depends:       base >= 4.10 && < 4.11   ,
-                       transformers > 0.5       ,
-                       mmorph
-  hs-source-dirs:      sig
+                       pipes >= 4.3.4
+  hs-source-dirs:      lib
   default-language:    Haskell2010

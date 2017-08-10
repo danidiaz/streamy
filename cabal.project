@@ -1,4 +1,4 @@
-packages: stream-t-sig/
-          stream-t-pipes/ 
-          stream-t-testsuite/ 
+packages: streamy-sig/
+          streamy-pipes/ 
+          streamy-testsuite/ 
 

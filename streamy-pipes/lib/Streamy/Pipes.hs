@@ -1,4 +1,4 @@
-module Control.Monad.Trans.Stream.Pipes (Stream,yield) where
+module Streamy.Pipes (Stream,yield) where
 
 import Pipes (Proxy,X)
 import qualified Pipes as P
