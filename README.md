@@ -1,6 +1,6 @@
-# stream-t
+# streamy
 
-## What's this
+## What's this?
 
 As a learning exercise, I'm trying to use the
 [Backpack](https://github.com/ezyang/ghc-proposals/blob/backpack/proposals/0000-backpack.rst)
@@ -25,9 +25,9 @@ Things that *perhaps* could get included:
 
 ## Structure of this project 
 
-- **stream-t-sig** is the abstract signature.
-- **stream-t-pipes** is the pipes bridge package.
-- **stream-t-testsuite** makes several copies of the signature and matches each
+- **streamy-sig** is the abstract signature.
+- **streamy-pipes** is the pipes bridge package.
+- **streamy-testsuite** makes several copies of the signature and matches each
   one with a different implementation (only pipes for now). 
 
 ## Do I need all these packages?
@@ -44,12 +44,14 @@ signatures and bridge modules.
 
 ## Explanation of the "mixins" stanza
 
-In the package.cabal of the stream-t-testsuite, we find the following:
+In the package.cabal of the streamy-testsuite, we find the following:
 
 ```
 mixins:
-    stream-t-sig requires (Control.Monad.Trans.Stream as Control.Monad.Trans.Stream.Test.Pipes),
-    stream-t-pipes (Control.Monad.Trans.Stream.Pipes as Control.Monad.Trans.Stream.Test.Pipes)
+    test-common 
+            (Test.Common as Test.Pipes.Common) 
+            requires (Test.Common.Streamy as Test.Pipes.Common.Streamy),
+    streamy-pipes (Streamy.Pipes as Test.Pipes.Common.Streamy)
 ```
 
 What is happening here?
@@ -58,33 +60,26 @@ From a Backpack perspective, libraries provide modules but also have "holes"
 (the signatures defined and/or used in the library). Libraries that only have
 signatures can be seen as "nothing but holes", in a sense.
 
-The lines of the mixins stanza create aliases for both modules and signatures
-(signatures are aliased with "requires"). 
+Each entry of the mixins stance creates a modified "copy" of a library
+dependency. For each copy, we can rename both the modules it provides and the
+"holes", the abstract signatures on which the provided modules depend. 
+
+We can make multiple simultaneous copies of a library dependency, in need be.
 
 Backpack works by lining up signatures and implementation modules by name, and
 then checking that they fit together.
 
 For simple cases, it is often enough to simply "slide" an implementation module
-into the signature, and not alias the signature at all. Here we are not doing
-that; my plan is have multiple aliases of the signature and instantiate each
-one differently.
+into the signature, and not bother renaming the signature at all.
 
 ## Building instructions
 
-I'm using [cabal-install](http://hackage.haskell.org/package/cabal-install) 2.0.
-
-I'm trying to build with
+Built using [cabal-install](http://hackage.haskell.org/package/cabal-install)
+2.0.
 
 > cabal new-build all --enable-tests
 
-But right now it's giving me the following error:
+## Where can I find further information on Backpack
 
-<pre>
-Building library instantiated with
-  Control.Monad.Trans.Stream = stream-t-pipes-0.1.0.0-inplace:Control.Monad.Trans.Stream.Pipes
-  for stream-t-sig-0.1.0.0..
-  /usr/bin/ar: /media/sf_hs/stream-t/dist-newstyle/build/x86_64-linux/ghc-8.2.1/stream-t-sig-0.1.0.0/stream-t-sig-0.1.0.0-inplace+D90cCEuLMuMBL3FC6AfBOf/build/stream-t-sig-0.1.0.0-inplace+D90cCEuLMuMBL3FC6AfBOf/objs-6766/libHSstream-t-sig-0.1.0.0-inplace+D90cCEuLMuMBL3FC6AfBOf.a: Operation not permitted
-  cabal: Failed to build stream-t-sig-0.1.0.0 (which is required by test:tests
-  from stream-t-testsuite-0.1.0.0).
-</pre>
-
+Edward Z. Yang's [thesis](https://github.com/ezyang/thesis/releases) is a good
+resource.
