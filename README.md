@@ -58,16 +58,17 @@ What is happening here?
 
 From a Backpack perspective, libraries provide modules but also have "holes"
 (the signatures defined and/or used in the library). Libraries that only have
-signatures can be seen as "nothing but holes", in a sense.
+signatures can be seen as "nothing but holes".
 
-Each entry of the mixins stance creates a modified "copy" of a library
-dependency. For each copy, we can rename both the modules it provides and the
-"holes", the abstract signatures on which the provided modules depend. 
+Each entry in the mixins stanza creates a modified copy of a library
+dependency. In the copy, we can rename both the provided modules and the
+required "holes", the abstract signatures on which the provided modules depend. 
 
-We can make multiple simultaneous copies of a library dependency, in need be.
+We can make multiple copies of a library dependency, if we need to instantiate
+it in different ways.
 
 Backpack works by lining up signatures and implementation modules by name, and
-then checking that they fit together.
+then checking that their contents match.
 
 For simple cases, it is often enough to simply "slide" an implementation module
 into the signature, and not bother renaming the signature at all.
@@ -79,7 +80,7 @@ Built using [cabal-install](http://hackage.haskell.org/package/cabal-install)
 
 > cabal new-build all --enable-tests
 
-## Where can I find further information on Backpack
+## Where can I find further information on Backpack?
 
 Edward Z. Yang's [thesis](https://github.com/ezyang/thesis/releases) is a good
 resource.
