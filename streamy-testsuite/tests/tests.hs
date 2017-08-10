@@ -3,7 +3,7 @@ module Main where
 import Test.Tasty
 import Test.Tasty.HUnit
 
-import PipeTests
+import Test.Pipes.Common
 
 main :: IO ()
 main = defaultMain tests
