@@ -1,20 +1,21 @@
-name:                streamy-sig
+name:                streamy-streaming
 version:             0.1.0.0
-synopsis:            Signature package for effectful streams.
+synopsis:            Streaming implementation of the streamy signature.
 description:         See <https://wiki.haskell.org/Module_signature>
 license:             MIT
 license-file:        LICENSE
 author:              Daniel Díaz
 maintainer:          diaz_carrete@yahoo.com
-category:            Signature, Streaming
+category:            Streaming
 build-type:          Simple
 extra-source-files:  ChangeLog.md, README.md
 cabal-version:       >= 2
 
 library
-  signatures:          Streamy
+  exposed-modules:     Streamy.Streaming
   build-depends:       base >= 4.10 && < 4.11   ,
                        transformers > 0.5       ,
-                       mmorph >= 1.0.0
-  hs-source-dirs:      sig
+                       mmorph >= 1.0.0,
+                       streaming >= 0.1.4.5
+  hs-source-dirs:      lib
   default-language:    Haskell2010

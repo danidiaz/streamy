@@ -1,4 +1,5 @@
 packages: streamy-sig/
           streamy-pipes/ 
+          streamy-streaming/ 
           streamy-testsuite/ 
 

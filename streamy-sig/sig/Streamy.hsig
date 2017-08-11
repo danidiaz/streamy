@@ -17,7 +17,7 @@ instance MFunctor (Stream o)
 
 yield :: Monad m => o -> Stream o m ()
 
-chain :: Monad m => (a -> m ()) -> Stream o m r -> Stream o m r
+chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 
 effects :: Monad m => Stream o m r -> m r
 

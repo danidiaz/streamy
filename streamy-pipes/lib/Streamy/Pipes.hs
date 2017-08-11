@@ -1,4 +1,4 @@
-module Streamy.Pipes (Stream,yield,chain) where
+module Streamy.Pipes (Stream,yield,chain,effects) where
 
 import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
