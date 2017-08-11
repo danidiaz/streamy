@@ -9,7 +9,7 @@ import Control.Monad.Morph
 data Stream :: * -> (* -> *) -> * -> *
 
 instance Monad m => Monad (Stream o m)
-instance MonadIO => MonadIO (Stream o m) 
+instance MonadIO m => MonadIO (Stream o m) 
 instance MonadTrans (Stream o)
 instance MFunctor (Stream o) 
 
