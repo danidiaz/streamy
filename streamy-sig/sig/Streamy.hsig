@@ -19,5 +19,7 @@ yield :: Monad m => o -> Stream o m ()
 
 chain :: Monad m => (a -> m ()) -> Stream o m r -> Stream o m r
 
--- TODO: effects, toList, toList_
+effects :: Monad m => Stream o m r -> m r
+
+-- TODO: toList, toList_
 
