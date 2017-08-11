@@ -14,3 +14,8 @@ instance MonadTrans (Stream o)
 instance MFunctor (Stream o) 
 
 yield :: Monad m => o -> Stream o m ()
+
+chain :: Monad m => (a -> m ()) -> Stream o m r -> Stream o m r
+
+-- TODO: effects, toList, toList_
+
