@@ -82,5 +82,11 @@ Built using [cabal-install](http://hackage.haskell.org/package/cabal-install)
 
 ## Where can I find further information on Backpack?
 
-Edward Z. Yang's [thesis](https://github.com/ezyang/thesis/releases) is a good
-resource.
+Edward Z. Yang's [thesis](https://github.com/ezyang/thesis/releases) is quite readable.
+
+[Designing the Backpack signature
+ecosystem](http://blog.ezyang.com/2017/03/designing-the-backpack-signature-ecosystem/)
+explains the usefulness of signature thinning (see also section 2.7 of the thesis).
+
+The [str-sig](http://next.hackage.haskell.org:8080/package/str-sig) signature
+package and its various implementations.
