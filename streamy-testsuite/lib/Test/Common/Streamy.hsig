@@ -1,1 +1,1 @@
-signature Test.Common.Streamy where
+signature Test.Common.Streamy (Stream,yield,chain,effects) where
