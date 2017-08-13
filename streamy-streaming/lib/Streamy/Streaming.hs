@@ -28,4 +28,8 @@ chain f (Stream s1) = Stream (Q.chain f s1)
 effects :: Monad m => Stream o m r -> m r
 effects (Stream s) = Q.effects s
 
+toList :: Monad m => Stream a m r -> m ([a],r)
+toList (Stream s) = fmap (\(as :> r) -> (as,r)) $ Q.toList s
 
+toList_ :: Monad m => Stream a m () -> m [a]
+toList_ (Stream s) = Q.toList_ s

@@ -21,5 +21,8 @@ chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 
 effects :: Monad m => Stream o m r -> m r
 
--- TODO: toList, toList_
+toList :: Monad m => Stream a m r -> m ([a],r)
 
+toList_ :: Monad m => Stream a m r -> m [a]
+
+-- TODO: toList tests, each

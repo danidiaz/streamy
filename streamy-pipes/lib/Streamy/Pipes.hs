@@ -14,3 +14,10 @@ chain action producer = producer >-> PP.chain action
 
 effects :: Monad m => Stream o m r -> m r
 effects producer = P.runEffect $ producer >-> PP.drain   
+
+toList :: Monad m => Stream a m r -> m ([a],r)
+toList = PP.toListM'
+
+toList_ :: Monad m => Stream a m () -> m [a]
+toList_ = PP.toListM
+
