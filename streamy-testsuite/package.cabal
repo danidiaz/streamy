@@ -39,18 +39,12 @@ test-suite tests
   mixins:  
         test-common 
                 (Test.Common as Test.Pipes.Common) 
-                requires (Test.Common.Streamy as Test.Pipes.Common.Streamy),
-        streamy-pipes 
-                (Streamy.Pipes as Test.Pipes.Common.Streamy),
+                requires (Test.Common.Streamy as Streamy.Pipes),
         test-common 
                 (Test.Common as Test.Streaming.Common) 
-                requires (Test.Common.Streamy as Test.Streaming.Common.Streamy),
-        streamy-streaming 
-                (Streamy.Streaming as Test.Streaming.Common.Streamy),
+                requires (Test.Common.Streamy as Streamy.Streaming),
         test-common 
                 (Test.Common as Test.Conduit.Common) 
-                requires (Test.Common.Streamy as Test.Conduit.Common.Streamy),
-        streamy-streaming 
-                (Streamy.Streaming as Test.Conduit.Common.Streamy)
+                requires (Test.Common.Streamy as Streamy.Conduit)
   default-language:    Haskell2010
 
