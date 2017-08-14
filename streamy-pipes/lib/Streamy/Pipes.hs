@@ -1,4 +1,12 @@
-module Streamy.Pipes (Stream,yield,chain,effects) where
+module Streamy.Pipes (
+          Stream
+        , yield
+        , toList
+        , toList_
+        , each
+        , chain
+        , effects
+    ) where
 
 import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
@@ -8,6 +16,9 @@ type Stream = Proxy X () ()
 
 yield :: Monad m => o -> Stream o m ()
 yield = P.yield
+
+each :: (Monad m, Foldable f) => f a -> Stream a m ()
+each = P.each
 
 chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 chain action producer = producer >-> PP.chain action

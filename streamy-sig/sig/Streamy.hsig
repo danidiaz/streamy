@@ -17,12 +17,13 @@ instance MFunctor (Stream o)
 
 yield :: Monad m => o -> Stream o m ()
 
+each :: (Monad m, Foldable f) => f a -> Stream a m ()
+
 chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 
 effects :: Monad m => Stream o m r -> m r
 
 toList :: Monad m => Stream a m r -> m ([a],r)
 
-toList_ :: Monad m => Stream a m r -> m [a]
+toList_ :: Monad m => Stream a m () -> m [a]
 
--- TODO: toList tests, each

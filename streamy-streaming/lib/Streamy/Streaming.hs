@@ -1,7 +1,14 @@
 {-# language GeneralizedNewtypeDeriving #-}
 module Streamy.Streaming (
           Stream
-        , yield,chain,effects,WrappedStream(..)) where
+        , WrappedStream(..)
+        , yield
+        , each
+        , toList
+        , toList_
+        , chain
+        , effects
+    ) where
 
 import Control.Monad
 import Control.Monad.Trans.Class
@@ -21,6 +28,9 @@ newtype WrappedStream o m r = Stream { getStream :: Q.Stream (Of o) m r }
 
 yield :: Monad m => o -> Stream o m ()
 yield x = Stream (Q.yield x)
+
+each :: (Monad m, Foldable f) => f a -> Stream a m ()
+each x = Stream (Q.each x) 
 
 chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 chain f (Stream s1) = Stream (Q.chain f s1)

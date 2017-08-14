@@ -1,1 +1,9 @@
-signature Test.Common.Streamy (Stream,yield,chain,effects) where
+signature Test.Common.Streamy (
+          Stream
+        , yield
+        , each
+        , toList
+        , toList_
+        , chain
+        , effects
+    ) where

@@ -11,7 +11,9 @@ import Control.Concurrent.MVar
 
 common :: [TestTree]
 common = 
-    [ testCase "basic" basic 
+    [ testCase "yield-chain-effects" basic 
+    , testCase "each-toList" eachToList
+    , testCase "each-toList_" eachToList_
     ]
 
 basic :: Assertion
@@ -24,7 +26,17 @@ basic = do
    assertBool "Stream returned unexpectd value." b
    assertEqual "Wrong accumulator value" "abcd" (reverse acc)
 
+eachToList :: Assertion
+eachToList = do
+    let msg = "this is a test"
+    (msg',b) <- Y.toList $ Y.each msg *> return True
+    assertBool "Stream returned unexpectd value." b
+    assertEqual "Wrong list value" msg msg'
 
-
+eachToList_ :: Assertion
+eachToList_ = do
+    let msg = "this is a test"
+    msg' <- Y.toList_ $ Y.each msg
+    assertEqual "Wrong list value" msg msg'
 
 
