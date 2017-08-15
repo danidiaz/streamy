@@ -12,6 +12,7 @@ module Streamy.Pipes (
         , Streamy.Pipes.repeatM
         , Streamy.Pipes.take
         , Streamy.Pipes.map
+        , Streamy.Pipes.mapM
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -56,3 +57,5 @@ take i producer = P.void producer >-> PP.take i
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f producer = producer >-> PP.map f
 
+mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
+mapM f producer = producer >-> PP.mapM f

@@ -1,8 +1,8 @@
 # stuff to tackle next
 
 - Functions
-    - mapM_ :: Monad m => (a -> m b) -> Stream (Of a) m r -> m r
     - mapM :: Monad m => (a -> m b) -> Stream (Of a) m r -> Stream (Of b) m r
+    - mapM_ :: Monad m => (a -> m b) -> Stream (Of a) m r -> m r
     - drop :: Monad m => Int -> Stream (Of a) m r -> Stream (Of a) m r
     - sequence :: Monad m => Pipe (m a) a m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 

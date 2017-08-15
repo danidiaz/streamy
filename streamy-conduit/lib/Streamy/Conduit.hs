@@ -12,6 +12,7 @@ module Streamy.Conduit (
         , Streamy.Conduit.repeatM
         , Streamy.Conduit.take
         , Streamy.Conduit.map
+        , Streamy.Conduit.mapM
     ) where
 
 import qualified Conduit as C
@@ -68,4 +69,5 @@ take i c = C.fuse (fmap (const ()) c) $ CC.take i
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f c = C.fuseUpstream c (CC.map f)
 
-
+mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
+mapM f c = C.fuseUpstream c (CC.mapM f)
