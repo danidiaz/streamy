@@ -11,6 +11,7 @@ import qualified Test.Common.Streamy as Y
 import Data.Foldable hiding (concat)
 import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Writer
 import Control.Concurrent.MVar
 
 common :: [TestTree]
@@ -20,6 +21,8 @@ common =
     , testCase "each-toList_" eachToList_
     , testCase "concat" testConcat
     , testCase "for" testFor
+    , testCase "repeat-take" testRepeatTake
+    , testCase "repeatM-take" testRepeatMTake
     ]
 
 basic :: Assertion
@@ -58,5 +61,17 @@ testFor = do
     assertEqual "" "canlyw" msg'
     msg'' <- Y.toList_ $ Y.for (Y.each msg) $ \_ -> return ()
     assertEqual "nooutput" "" msg''
+
+testRepeatTake :: Assertion
+testRepeatTake = do
+    msg' <- Y.toList_ . Y.take 3 $ Y.repeat 'a'
+    assertEqual "" "aaa" msg'
+
+testRepeatMTake :: Assertion
+testRepeatMTake = do
+    (msg',acc) <- runWriterT $ Y.toList_ . Y.take 3 $ Y.repeatM (tell "z" >> return 'a')
+    assertEqual "msg" "aaa" msg'
+    assertEqual "acc" "zzz" acc
+
 
 

@@ -8,6 +8,9 @@ signature Test.Common.Streamy (
         , effects
         , concat
         , for
+        , repeat
+        , repeatM
+        , take
     ) where
 
 import Prelude () -- weird confusions otherwise

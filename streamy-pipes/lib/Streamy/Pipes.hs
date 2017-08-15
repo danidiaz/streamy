@@ -8,6 +8,9 @@ module Streamy.Pipes (
         , effects
         , Streamy.Pipes.concat
         , for
+        , Streamy.Pipes.repeat
+        , Streamy.Pipes.repeatM
+        , Streamy.Pipes.take
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -39,3 +42,14 @@ concat producer = P.for producer each
 
 for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
 for = P.for
+
+repeat :: Monad m => a -> Stream a m r
+repeat = PP.repeatM . return
+
+repeatM :: Monad m => m a -> Stream a m r
+repeatM = PP.repeatM
+
+take :: Monad m => Int -> Stream o m r -> Stream o m () 
+take i producer = P.void producer >-> PP.take i
+
+

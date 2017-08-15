@@ -10,6 +10,9 @@ module Streamy.Streaming (
         , effects
         , Streamy.Streaming.concat
         , for
+        , Streamy.Streaming.repeat
+        , Streamy.Streaming.repeatM
+        , Streamy.Streaming.take
     ) where
 
 import Control.Monad
@@ -51,3 +54,13 @@ concat (Stream s) = Stream (Q.concat s)
 
 for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
 for (Stream s) f = Stream (Q.for s (getStream . f))    
+
+repeat :: Monad m => a -> Stream a m r
+repeat = Stream . Q.repeat
+
+repeatM :: Monad m => m a -> Stream a m r
+repeatM = Stream . Q.repeatM
+
+take :: Monad m => Int -> Stream o m r -> Stream o m () 
+take i (Stream s) = Stream (Q.take i s)
+

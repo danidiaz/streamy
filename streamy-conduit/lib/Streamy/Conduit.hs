@@ -8,6 +8,9 @@ module Streamy.Conduit (
         , effects
         , Streamy.Conduit.concat
         , for
+        , Streamy.Conduit.repeat
+        , Streamy.Conduit.repeatM
+        , Streamy.Conduit.take
     ) where
 
 import qualified Conduit as C
@@ -52,3 +55,11 @@ for s f = do
                 Nothing -> return ()
     C.fuseUpstream s go
 
+repeat :: Monad m => a -> Stream a m r
+repeat a = fmap (\() -> error "never happens") $ CC.repeat a
+
+repeatM :: Monad m => m a -> Stream a m r
+repeatM a = fmap (\() -> error "never happens") $ CC.repeatM a
+
+take :: Monad m => Int -> Stream o m r -> Stream o m () 
+take i c = C.fuse (fmap (const ()) c) $ CC.take i

@@ -28,4 +28,7 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | effects         | X | X | X |
     | concat          | X | X | X |
     | for             | X | X | X |
+    | repeat          | X | X | X |
+    | repeatM         | X | X | X |
+    | take            | X | X | X |
 

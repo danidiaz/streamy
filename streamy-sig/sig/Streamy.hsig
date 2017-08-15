@@ -1,7 +1,7 @@
 {-# LANGUAGE KindSignatures #-}
 signature Streamy where
 
-import Prelude (Functor,Applicative,Foldable)
+import Prelude (Functor,Applicative,Foldable,Int)
 import Control.Monad (Monad)
 import Control.Monad.Trans.Class (MonadTrans)
 import Control.Monad.IO.Class (MonadIO)
@@ -31,3 +31,10 @@ effects :: Monad m => Stream o m r -> m r
 concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
 
 for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
+
+repeat :: Monad m => a -> Stream a m r
+
+repeatM :: Monad m => m a -> Stream a m r
+
+take :: Monad m => Int -> Stream o m r -> Stream o m () 
+
