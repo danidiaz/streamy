@@ -13,6 +13,7 @@ module Streamy.Conduit (
         , Streamy.Conduit.take
         , Streamy.Conduit.map
         , Streamy.Conduit.mapM
+        , Streamy.Conduit.mapM_
     ) where
 
 import qualified Conduit as C
@@ -21,6 +22,7 @@ import qualified Data.Conduit.List as CL
 
 import Data.Foldable (Foldable)
 import qualified Data.Foldable 
+import Data.Functor (void)
 import Data.Tuple (swap)
 
 type Stream = C.ConduitM ()
@@ -71,3 +73,7 @@ map f c = C.fuseUpstream c (CC.map f)
 
 mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
 mapM f c = C.fuseUpstream c (CC.mapM f)
+
+mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
+mapM_ f c = C.runConduit $ C.fuseUpstream c (CC.mapM_ (void . f))
+

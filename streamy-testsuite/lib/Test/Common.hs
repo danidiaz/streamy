@@ -25,6 +25,7 @@ common =
     , testCase "repeatM-take" testRepeatMTake
     , testCase "map" testMap
     , testCase "mapM" testMapM
+    , testCase "mapM_" testMapM_
     ]
 
 basic :: Assertion
@@ -85,4 +86,10 @@ testMapM = do
     (msg',acc) <- runWriterT $ Y.toList_ . Y.mapM (\c -> tell "z" >> return (succ c)) $ Y.each "amx"
     assertEqual "msg" "bny" msg'
     assertEqual "acc" "zzz" acc
+
+testMapM_ :: Assertion
+testMapM_ = do
+    let msg = "abc"
+    (_,acc) <- runWriterT $ Y.effects . Y.mapM (\c -> tell [c]) $ Y.each msg
+    assertEqual "acc" msg acc
 

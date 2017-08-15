@@ -42,4 +42,5 @@ map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r
 
 mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
 
+mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 
