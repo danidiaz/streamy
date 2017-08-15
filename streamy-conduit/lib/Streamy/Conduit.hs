@@ -11,6 +11,7 @@ module Streamy.Conduit (
         , Streamy.Conduit.repeat
         , Streamy.Conduit.repeatM
         , Streamy.Conduit.take
+        , Streamy.Conduit.map
     ) where
 
 import qualified Conduit as C
@@ -63,3 +64,8 @@ repeatM a = fmap (\() -> error "never happens") $ CC.repeatM a
 
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 take i c = C.fuse (fmap (const ()) c) $ CC.take i
+
+map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
+map f c = C.fuseUpstream c (CC.map f)
+
+

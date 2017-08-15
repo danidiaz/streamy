@@ -11,6 +11,7 @@ signature Test.Common.Streamy (
         , repeat
         , repeatM
         , take
+        , map
     ) where
 
 import Prelude () -- weird confusions otherwise

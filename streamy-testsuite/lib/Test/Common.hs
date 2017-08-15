@@ -23,6 +23,7 @@ common =
     , testCase "for" testFor
     , testCase "repeat-take" testRepeatTake
     , testCase "repeatM-take" testRepeatMTake
+    , testCase "map" testMap
     ]
 
 basic :: Assertion
@@ -73,5 +74,9 @@ testRepeatMTake = do
     assertEqual "msg" "aaa" msg'
     assertEqual "acc" "zzz" acc
 
+testMap :: Assertion
+testMap = do
+    msg' <- Y.toList_ . Y.map succ $ Y.each "amx"
+    assertEqual "msg" "bny" msg'
 
 

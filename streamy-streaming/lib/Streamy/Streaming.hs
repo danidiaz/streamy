@@ -13,6 +13,7 @@ module Streamy.Streaming (
         , Streamy.Streaming.repeat
         , Streamy.Streaming.repeatM
         , Streamy.Streaming.take
+        , Streamy.Streaming.map
     ) where
 
 import Control.Monad
@@ -63,4 +64,7 @@ repeatM = Stream . Q.repeatM
 
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 take i (Stream s) = Stream (Q.take i s)
+
+map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
+map f (Stream s) = Stream (Q.map f s)
 

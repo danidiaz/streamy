@@ -1,7 +1,8 @@
 # stuff to tackle next
 
 - Functions
-    - map :: Monad m => (a -> b) -> Stream (Of a) m r -> Stream (Of b) m r 
+    - mapM_ :: Monad m => (a -> m b) -> Stream (Of a) m r -> m r
+    - mapM :: Monad m => (a -> m b) -> Stream (Of a) m r -> Stream (Of b) m r
     - drop :: Monad m => Int -> Stream (Of a) m r -> Stream (Of a) m r
     - sequence :: Monad m => Pipe (m a) a m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
@@ -10,8 +11,6 @@
     - replicateM :: Monad m => Int -> m a -> Stream (Of a) m ()
     - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
     - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
-    - mapM_ :: Monad m => (a -> m b) -> Stream (Of a) m r -> m r
-    - mapM :: Monad m => (a -> m b) -> Stream (Of a) m r -> Stream (Of b) m r
     - filter :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m r
     - filterM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m r
     - take :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m () 

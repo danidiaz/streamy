@@ -38,3 +38,5 @@ repeatM :: Monad m => m a -> Stream a m r
 
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 
+map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
+
