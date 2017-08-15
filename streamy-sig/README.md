@@ -26,4 +26,5 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | toList_         | X | X | X |
     | chain           | X | X | X |
     | effects         | X | X | X |
+    | concat          | X | X | X |
 

@@ -6,6 +6,7 @@ module Streamy.Conduit (
         , toList_
         , chain
         , effects
+        , Streamy.Conduit.concat
     ) where
 
 import qualified Conduit as C
@@ -23,15 +24,18 @@ yield = C.yield
 each :: (Monad m, Foldable f) => f o -> Stream o m ()
 each = CL.sourceList . Data.Foldable.toList
 
+toList :: Monad m => Stream a m r -> m ([a],r)
+toList s = fmap swap $ C.runConduit $ C.fuseBoth s C.sinkList
+
+toList_ :: Monad m => Stream a m () -> m [a]
+toList_ s = C.connect s C.sinkList
+
 chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 chain f s = C.fuseUpstream s (C.mapMC (\i -> f i *> pure i))
 
 effects :: Monad m => Stream o m r -> m r
 effects s = C.runConduit $ C.fuseUpstream s C.sinkNull
 
-toList :: Monad m => Stream a m r -> m ([a],r)
-toList s = fmap swap $ C.runConduit $ C.fuseBoth s C.sinkList
-
-toList_ :: Monad m => Stream a m () -> m [a]
-toList_ s = C.connect s C.sinkList
+concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
+concat s = C.fuseUpstream s CL.concat
 

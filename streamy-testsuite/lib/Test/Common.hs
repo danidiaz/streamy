@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Test.Common (common) where
 
 import Test.Tasty (TestTree)
@@ -6,6 +8,8 @@ import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
 import Test.Common.Streamy (Stream)
 import qualified Test.Common.Streamy as Y
 
+import Data.Foldable hiding (concat)
+import Control.Monad
 import Control.Monad.IO.Class
 import Control.Concurrent.MVar
 
@@ -14,6 +18,7 @@ common =
     [ testCase "yield-chain-effects" basic 
     , testCase "each-toList" eachToList
     , testCase "each-toList_" eachToList_
+    , testCase "concat" testConcat
     ]
 
 basic :: Assertion
@@ -38,5 +43,11 @@ eachToList_ = do
     let msg = "this is a test"
     msg' <- Y.toList_ $ Y.each msg
     assertEqual "Wrong list value" msg msg'
+
+testConcat :: Assertion
+testConcat = do
+    let cs = [['t','h'],['i','s']]
+    msg' <- Y.toList_ . Y.concat . Y.each $ cs
+    assertEqual "" (join cs) msg'
 
 

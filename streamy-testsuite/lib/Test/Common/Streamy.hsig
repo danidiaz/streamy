@@ -6,4 +6,7 @@ signature Test.Common.Streamy (
         , toList_
         , chain
         , effects
+        , concat
     ) where
+
+import Prelude () -- weird confusions otherwise
