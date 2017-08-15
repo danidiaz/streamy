@@ -6,19 +6,19 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
 
     Key | Module name
     ----|--------------------------
-    P   | Streamy.Pipes
     S   | Streamy.Streaming
+    P   | Streamy.Pipes
     C   | Streamy.Conduit
 
 **Stream types**
 
-    |                 | S | T | C |
+    |                 | S | P | C |
     |-----------------|---|---|---|
     | Stream          | X | X | X |
 
 **Basic functions**
 
-    |                 | S | T | C |
+    |                 | S | P | C |
     |-----------------|---|---|---|
     | yield           | X | X | X |
     | each            | X | X | X |
