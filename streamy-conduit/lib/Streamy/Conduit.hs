@@ -79,5 +79,7 @@ mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 mapM_ f c = C.runConduit $ C.fuseUpstream c (CC.mapM_ (void . f))
 
 drop :: Monad m => Int -> Stream a m r -> Stream a m r
-drop i c = C.fuseUpstream c (C.dropC i)
+drop i c = 
+    -- https://stackoverflow.com/questions/10834773/how-to-use-the-conduit-drop-function-in-a-pipeline
+    C.fuseUpstream c (C.dropC i >> CL.map id)
 
