@@ -23,10 +23,12 @@ common =
     , testCase "for" testFor
     , testCase "repeat-take" testRepeatTake
     , testCase "repeatM-take" testRepeatMTake
+    , testCase "takeWhile" testTakeWhile
     , testCase "map" testMap
     , testCase "mapM" testMapM
     , testCase "mapM_" testMapM_
     , testCase "drop" testDrop
+    , testCase "dropWhile" testDropWhile
     ]
 
 basic :: Assertion
@@ -71,6 +73,11 @@ testRepeatTake = do
     msg' <- Y.toList_ . Y.take 3 $ Y.repeat 'a'
     assertEqual "" "aaa" msg'
 
+testTakeWhile :: Assertion
+testTakeWhile = do
+    msg' <- Y.toList_ . Y.takeWhile (< 3) $ Y.each [1::Int,2,3,4,5]
+    assertEqual "" [1,2] msg'
+
 testRepeatMTake :: Assertion
 testRepeatMTake = do
     (msg',acc) <- runWriterT $ Y.toList_ . Y.take 3 $ Y.repeatM (tell "z" >> return 'a')
@@ -99,4 +106,10 @@ testDrop = do
     let msg = "abcd"
     msg' <- Y.toList_ . Y.drop 2 $ Y.each msg
     assertEqual "acc" "cd" msg'
+
+testDropWhile :: Assertion
+testDropWhile = do
+    let msg = "aacca"
+    msg' <- Y.toList_ . Y.dropWhile (=='a') $ Y.each msg
+    assertEqual "acc" "cca" msg'
 

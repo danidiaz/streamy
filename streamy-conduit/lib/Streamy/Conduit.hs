@@ -11,10 +11,12 @@ module Streamy.Conduit (
         , Streamy.Conduit.repeat
         , Streamy.Conduit.repeatM
         , Streamy.Conduit.take
+        , Streamy.Conduit.takeWhile
         , Streamy.Conduit.map
         , Streamy.Conduit.mapM
         , Streamy.Conduit.mapM_
         , Streamy.Conduit.drop
+        , Streamy.Conduit.dropWhile
     ) where
 
 import qualified Conduit as C
@@ -69,6 +71,9 @@ repeatM a = fmap (\() -> error "never happens") $ CC.repeatM a
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 take i c = C.fuse (fmap (const ()) c) $ CC.take i
 
+takeWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m ()
+takeWhile f c = C.fuse (fmap (const ()) c) $ CC.takeWhile f
+
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f c = C.fuseUpstream c (CC.map f)
 
@@ -82,4 +87,9 @@ drop :: Monad m => Int -> Stream a m r -> Stream a m r
 drop i c = 
     -- https://stackoverflow.com/questions/10834773/how-to-use-the-conduit-drop-function-in-a-pipeline
     C.fuseUpstream c (C.dropC i >> CL.map id)
+
+dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+dropWhile f c = 
+    -- https://stackoverflow.com/questions/10834773/how-to-use-the-conduit-drop-function-in-a-pipeline
+    C.fuseUpstream c (C.dropWhileC f >> CL.map id)
 

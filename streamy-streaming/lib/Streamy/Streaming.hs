@@ -13,10 +13,12 @@ module Streamy.Streaming (
         , Streamy.Streaming.repeat
         , Streamy.Streaming.repeatM
         , Streamy.Streaming.take
+        , Streamy.Streaming.takeWhile
         , Streamy.Streaming.map
         , Streamy.Streaming.mapM
         , Streamy.Streaming.mapM_
         , Streamy.Streaming.drop
+        , Streamy.Streaming.dropWhile
     ) where
 
 import Control.Monad
@@ -68,6 +70,9 @@ repeatM = Stream . Q.repeatM
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 take i (Stream s) = Stream (Q.take i s)
 
+takeWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m ()
+takeWhile f (Stream s) = Stream (Q.takeWhile f s)
+
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f (Stream s) = Stream (Q.map f s)
 
@@ -79,4 +84,8 @@ mapM_ f (Stream s) = Q.mapM_ f s
 
 drop :: Monad m => Int -> Stream a m r -> Stream a m r
 drop i (Stream s) = (Stream $ Q.drop i s)
+
+dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+dropWhile f (Stream s) = (Stream $ Q.dropWhile f s)
+
 

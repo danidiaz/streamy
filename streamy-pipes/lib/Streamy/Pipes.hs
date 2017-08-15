@@ -11,10 +11,12 @@ module Streamy.Pipes (
         , Streamy.Pipes.repeat
         , Streamy.Pipes.repeatM
         , Streamy.Pipes.take
+        , Streamy.Pipes.takeWhile
         , Streamy.Pipes.map
         , Streamy.Pipes.mapM
         , Streamy.Pipes.mapM_
         , Streamy.Pipes.drop
+        , Streamy.Pipes.dropWhile
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -56,6 +58,9 @@ repeatM = PP.repeatM
 take :: Monad m => Int -> Stream o m r -> Stream o m () 
 take i producer = P.void producer >-> PP.take i
 
+takeWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m ()
+takeWhile f producer = P.void producer >-> PP.takeWhile f
+
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f producer = producer >-> PP.map f
 
@@ -68,3 +73,5 @@ mapM_ f producer = P.runEffect $ producer >-> PP.mapM_ (P.void . f)
 drop :: Monad m => Int -> Stream a m r -> Stream a m r
 drop i producer = producer >-> PP.drop i
 
+dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+dropWhile f producer = producer >-> PP.dropWhile f

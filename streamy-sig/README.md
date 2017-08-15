@@ -31,8 +31,10 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | repeat          | X | X | X |
     | repeatM         | X | X | X |
     | take            | X | X | X |
+    | takeWhile       | X | X | X |
     | map             | X | X | X |
     | mapM            | X | X | X |
     | mapM_           | X | X | X |
     | drop            | X | X | X |
+    | dropWhile       | X | X | X |
 
