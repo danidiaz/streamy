@@ -54,3 +54,8 @@ filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 
 filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
 
+replicate :: Monad m => Int -> a -> Stream a m ()
+
+replicateM :: Monad m => Int -> m a -> Stream a m ()
+
+

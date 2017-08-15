@@ -39,4 +39,7 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | dropWhile       | X | X | X |
     | filter          | X | X | X |
     | filterM         | X | X | X |
+    | replicate       | X | X | X |
+    | replicateM      | X | X | X |
+
 

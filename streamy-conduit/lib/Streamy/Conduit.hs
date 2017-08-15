@@ -19,6 +19,8 @@ module Streamy.Conduit (
         , Streamy.Conduit.dropWhile
         , Streamy.Conduit.filter
         , Streamy.Conduit.filterM
+        , Streamy.Conduit.replicate
+        , Streamy.Conduit.replicateM
     ) where
 
 import qualified Conduit as C
@@ -100,4 +102,10 @@ filter f c = C.fuseUpstream c (CC.filter f)
 
 filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
 filterM f c = C.fuseUpstream c (CC.filterM f)
+
+replicate :: Monad m => Int -> a -> Stream a m ()
+replicate i a = CC.replicate i a
+
+replicateM :: Monad m => Int -> m a -> Stream a m ()
+replicateM i a = CC.replicateM i a
 

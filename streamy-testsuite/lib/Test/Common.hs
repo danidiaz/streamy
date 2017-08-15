@@ -31,6 +31,8 @@ common =
     , testCase "dropWhile" testDropWhile
     , testCase "filter" testFilter
     , testCase "filterM" testFilterM
+    , testCase "replicate" testReplicate
+    , testCase "replicateM" testReplicateM
     ]
 
 basic :: Assertion
@@ -126,4 +128,14 @@ testFilterM = do
     let msg = "abacada"
     msg' <- Y.toList_ . Y.filterM (return . (/='a')) $ Y.each msg
     assertEqual "acc" "bcd" msg'
+
+testReplicate :: Assertion
+testReplicate = do
+    msg' <- Y.toList_ $ Y.replicate 5 'a'
+    assertEqual "acc" "aaaaa" msg'
+
+testReplicateM :: Assertion
+testReplicateM = do
+    msg' <- Y.toList_ $ Y.replicateM 5 (pure 'a')
+    assertEqual "acc" "aaaaa" msg'
 

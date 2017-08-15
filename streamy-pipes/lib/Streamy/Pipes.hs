@@ -19,8 +19,11 @@ module Streamy.Pipes (
         , Streamy.Pipes.dropWhile
         , Streamy.Pipes.filter
         , Streamy.Pipes.filterM
+        , Streamy.Pipes.replicate
+        , Streamy.Pipes.replicateM
     ) where
 
+import qualified Data.List
 import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
 import qualified Pipes.Prelude as PP
@@ -83,4 +86,10 @@ filter f producer = producer >-> PP.filter f
 
 filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
 filterM f producer = producer >-> PP.filterM f
+
+replicate :: Monad m => Int -> a -> Stream a m ()
+replicate i a = P.each $ Data.List.replicate i a  
+
+replicateM :: Monad m => Int -> m a -> Stream a m ()
+replicateM i a = PP.replicateM i a 
 

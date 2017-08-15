@@ -21,6 +21,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.dropWhile
         , Streamy.Streaming.filter
         , Streamy.Streaming.filterM
+        , Streamy.Streaming.replicate
+        , Streamy.Streaming.replicateM
     ) where
 
 import Control.Monad
@@ -95,4 +97,10 @@ filter f (Stream s) = (Stream $ Q.filter f s)
 
 filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
 filterM f (Stream s) = (Stream $ Q.filterM f s)  
+
+replicate :: Monad m => Int -> a -> Stream a m ()
+replicate i a = Stream $ Q.replicate i a
+
+replicateM :: Monad m => Int -> m a -> Stream a m ()
+replicateM i a = Stream $ Q.replicateM i a
 
