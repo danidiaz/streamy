@@ -1,13 +1,11 @@
 # stuff to tackle next
 
 - Functions
+    - replicate :: Monad m => Int -> a -> Stream (Of a) m ()
+    - replicateM :: Monad m => Int -> m a -> Stream (Of a) m ()
     - sequence :: Monad m => Pipe (m a) a m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
     - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
-    - replicate :: Monad m => Int -> a -> Stream (Of a) m ()
-    - replicateM :: Monad m => Int -> m a -> Stream (Of a) m ()
-    - filter :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m r
-    - filterM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m r
     - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
     - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - all_

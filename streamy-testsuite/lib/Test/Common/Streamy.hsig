@@ -16,6 +16,8 @@ signature Test.Common.Streamy (
         , mapM
         , drop
         , dropWhile
+        , filter
+        , filterM
     ) where
 
 import Prelude () -- weird confusions otherwise

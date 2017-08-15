@@ -37,4 +37,6 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | mapM_           | X | X | X |
     | drop            | X | X | X |
     | dropWhile       | X | X | X |
+    | filter          | X | X | X |
+    | filterM         | X | X | X |
 

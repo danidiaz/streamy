@@ -17,6 +17,8 @@ module Streamy.Conduit (
         , Streamy.Conduit.mapM_
         , Streamy.Conduit.drop
         , Streamy.Conduit.dropWhile
+        , Streamy.Conduit.filter
+        , Streamy.Conduit.filterM
     ) where
 
 import qualified Conduit as C
@@ -92,4 +94,10 @@ dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 dropWhile f c = 
     -- https://stackoverflow.com/questions/10834773/how-to-use-the-conduit-drop-function-in-a-pipeline
     C.fuseUpstream c (C.dropWhileC f >> CL.map id)
+
+filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+filter f c = C.fuseUpstream c (CC.filter f)
+
+filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
+filterM f c = C.fuseUpstream c (CC.filterM f)
 

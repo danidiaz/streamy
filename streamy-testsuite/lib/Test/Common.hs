@@ -29,6 +29,8 @@ common =
     , testCase "mapM_" testMapM_
     , testCase "drop" testDrop
     , testCase "dropWhile" testDropWhile
+    , testCase "filter" testFilter
+    , testCase "filterM" testFilterM
     ]
 
 basic :: Assertion
@@ -112,4 +114,16 @@ testDropWhile = do
     let msg = "aacca"
     msg' <- Y.toList_ . Y.dropWhile (=='a') $ Y.each msg
     assertEqual "acc" "cca" msg'
+
+testFilter :: Assertion
+testFilter = do
+    let msg = "abacada"
+    msg' <- Y.toList_ . Y.filter (/='a') $ Y.each msg
+    assertEqual "acc" "bcd" msg'
+
+testFilterM :: Assertion
+testFilterM = do
+    let msg = "abacada"
+    msg' <- Y.toList_ . Y.filterM (return . (/='a')) $ Y.each msg
+    assertEqual "acc" "bcd" msg'
 

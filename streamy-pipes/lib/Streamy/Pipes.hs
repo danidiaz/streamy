@@ -17,6 +17,8 @@ module Streamy.Pipes (
         , Streamy.Pipes.mapM_
         , Streamy.Pipes.drop
         , Streamy.Pipes.dropWhile
+        , Streamy.Pipes.filter
+        , Streamy.Pipes.filterM
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -75,3 +77,10 @@ drop i producer = producer >-> PP.drop i
 
 dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 dropWhile f producer = producer >-> PP.dropWhile f
+
+filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+filter f producer = producer >-> PP.filter f
+
+filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
+filterM f producer = producer >-> PP.filterM f
+

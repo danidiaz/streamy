@@ -19,6 +19,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.mapM_
         , Streamy.Streaming.drop
         , Streamy.Streaming.dropWhile
+        , Streamy.Streaming.filter
+        , Streamy.Streaming.filterM
     ) where
 
 import Control.Monad
@@ -88,4 +90,9 @@ drop i (Stream s) = (Stream $ Q.drop i s)
 dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 dropWhile f (Stream s) = (Stream $ Q.dropWhile f s)
 
+filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+filter f (Stream s) = (Stream $ Q.filter f s)  
+
+filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
+filterM f (Stream s) = (Stream $ Q.filterM f s)  
 

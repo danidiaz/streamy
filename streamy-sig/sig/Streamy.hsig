@@ -50,3 +50,7 @@ drop :: Monad m => Int -> Stream a m r -> Stream a m r
 
 dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 
+filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
+
+filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
+
