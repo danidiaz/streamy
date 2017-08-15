@@ -1,7 +1,6 @@
 # stuff to tackle next
 
 - Functions
-    - for :: (Monad m, Functor f) => Stream (Of a) m r -> (a -> Stream f m x) -> Stream f m r
     - sequence :: Monad m => Pipe (m a) a m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
     - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
