@@ -27,4 +27,5 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | chain           | X | X | X |
     | effects         | X | X | X |
     | concat          | X | X | X |
+    | for             | X | X | X |
 

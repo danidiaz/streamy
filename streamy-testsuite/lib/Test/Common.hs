@@ -19,6 +19,7 @@ common =
     , testCase "each-toList" eachToList
     , testCase "each-toList_" eachToList_
     , testCase "concat" testConcat
+    , testCase "for" testFor
     ]
 
 basic :: Assertion
@@ -49,5 +50,13 @@ testConcat = do
     let cs = [['t','h'],['i','s']]
     msg' <- Y.toList_ . Y.concat . Y.each $ cs
     assertEqual "" (join cs) msg'
+
+testFor :: Assertion
+testFor = do
+    let msg = "bmx"
+    msg' <- Y.toList_ $ Y.for (Y.each msg) $ \c -> Y.each [succ c,pred c]
+    assertEqual "" "canlyw" msg'
+    msg'' <- Y.toList_ $ Y.for (Y.each msg) $ \_ -> return ()
+    assertEqual "nooutput" "" msg''
 
 

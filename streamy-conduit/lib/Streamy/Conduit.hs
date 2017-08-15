@@ -7,9 +7,11 @@ module Streamy.Conduit (
         , chain
         , effects
         , Streamy.Conduit.concat
+        , for
     ) where
 
 import qualified Conduit as C
+import qualified Data.Conduit.Combinators as CC
 import qualified Data.Conduit.List as CL
 
 import Data.Foldable (Foldable)
@@ -38,4 +40,15 @@ effects s = C.runConduit $ C.fuseUpstream s C.sinkNull
 
 concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
 concat s = C.fuseUpstream s CL.concat
+
+for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
+for s f = do
+    -- Is there a more succint way of doing this?
+    let go = do
+            x <- C.await
+            case x of
+                Just v -> do _ <- C.fuse (CC.map (const ())) (f v)
+                             go 
+                Nothing -> return ()
+    C.fuseUpstream s go
 

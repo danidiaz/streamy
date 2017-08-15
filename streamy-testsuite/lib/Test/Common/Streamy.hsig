@@ -7,6 +7,7 @@ signature Test.Common.Streamy (
         , chain
         , effects
         , concat
+        , for
     ) where
 
 import Prelude () -- weird confusions otherwise
