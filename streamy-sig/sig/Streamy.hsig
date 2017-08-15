@@ -44,3 +44,7 @@ mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
 
 mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 
+drop :: Monad m => Int -> Stream a m r -> Stream a m r
+
+
+

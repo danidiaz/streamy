@@ -13,6 +13,7 @@ signature Test.Common.Streamy (
         , take
         , map
         , mapM
+        , drop
     ) where
 
 import Prelude () -- weird confusions otherwise

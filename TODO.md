@@ -7,14 +7,13 @@
     - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
     - replicate :: Monad m => Int -> a -> Stream (Of a) m ()
     - replicateM :: Monad m => Int -> m a -> Stream (Of a) m ()
-    - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
-    - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - filter :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m r
     - filterM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m r
-    - take :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m () 
     - takeWhile :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
     - takeWhileM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
     - dropWhile :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m r
+    - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
+    - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - all_
     - any_
 

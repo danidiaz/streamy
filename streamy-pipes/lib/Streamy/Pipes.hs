@@ -14,6 +14,7 @@ module Streamy.Pipes (
         , Streamy.Pipes.map
         , Streamy.Pipes.mapM
         , Streamy.Pipes.mapM_
+        , Streamy.Pipes.drop
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -63,4 +64,7 @@ mapM f producer = producer >-> PP.mapM f
 
 mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 mapM_ f producer = P.runEffect $ producer >-> PP.mapM_ (P.void . f)
+
+drop :: Monad m => Int -> Stream a m r -> Stream a m r
+drop i producer = producer >-> PP.drop i
 

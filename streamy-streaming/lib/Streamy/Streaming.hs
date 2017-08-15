@@ -16,6 +16,7 @@ module Streamy.Streaming (
         , Streamy.Streaming.map
         , Streamy.Streaming.mapM
         , Streamy.Streaming.mapM_
+        , Streamy.Streaming.drop
     ) where
 
 import Control.Monad
@@ -75,4 +76,7 @@ mapM f (Stream s) = Stream (Q.mapM f s)
 
 mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 mapM_ f (Stream s) = Q.mapM_ f s  
+
+drop :: Monad m => Int -> Stream a m r -> Stream a m r
+drop i (Stream s) = (Stream $ Q.drop i s)
 

@@ -14,6 +14,7 @@ module Streamy.Conduit (
         , Streamy.Conduit.map
         , Streamy.Conduit.mapM
         , Streamy.Conduit.mapM_
+        , Streamy.Conduit.drop
     ) where
 
 import qualified Conduit as C
@@ -76,4 +77,7 @@ mapM f c = C.fuseUpstream c (CC.mapM f)
 
 mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 mapM_ f c = C.runConduit $ C.fuseUpstream c (CC.mapM_ (void . f))
+
+drop :: Monad m => Int -> Stream a m r -> Stream a m r
+drop i c = C.fuseUpstream c (C.dropC i)
 

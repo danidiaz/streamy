@@ -26,6 +26,7 @@ common =
     , testCase "map" testMap
     , testCase "mapM" testMapM
     , testCase "mapM_" testMapM_
+    , testCase "drop" testDrop
     ]
 
 basic :: Assertion
@@ -92,4 +93,10 @@ testMapM_ = do
     let msg = "abc"
     (_,acc) <- runWriterT $ Y.effects . Y.mapM (\c -> tell [c]) $ Y.each msg
     assertEqual "acc" msg acc
+
+testDrop :: Assertion
+testDrop = do
+    let msg = "abcd"
+    msg' <- Y.toList_ . Y.drop 2 $ Y.each msg
+    assertEqual "acc" "cd" msg'
 
