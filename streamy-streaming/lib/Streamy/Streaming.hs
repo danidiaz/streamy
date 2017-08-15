@@ -9,6 +9,7 @@ module Streamy.Streaming (
         , chain
         , effects
         , Streamy.Streaming.concat
+        , for
     ) where
 
 import Control.Monad
@@ -48,4 +49,5 @@ effects (Stream s) = Q.effects s
 concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
 concat (Stream s) = Stream (Q.concat s)  
 
-
+for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
+for (Stream s) f = Stream (Q.for s (getStream . f))    

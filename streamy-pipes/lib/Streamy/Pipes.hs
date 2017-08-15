@@ -7,6 +7,7 @@ module Streamy.Pipes (
         , chain
         , effects
         , Streamy.Pipes.concat
+        , for
     ) where
 
 import Pipes (Proxy,X,(>->))
@@ -36,4 +37,5 @@ toList_ = PP.toListM
 concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
 concat producer = P.for producer each
 
-
+for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
+for = P.for

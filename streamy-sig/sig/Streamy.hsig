@@ -29,3 +29,5 @@ chain :: Monad m => (o -> m ()) -> Stream o m r -> Stream o m r
 effects :: Monad m => Stream o m r -> m r
 
 concat :: (Monad m, Foldable f) => Stream (f a) m r -> Stream a m r
+
+for :: Monad m => Stream a m r -> (a -> Stream b m ()) -> Stream b m r
