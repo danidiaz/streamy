@@ -21,6 +21,8 @@ module Streamy.Conduit (
         , Streamy.Conduit.filterM
         , Streamy.Conduit.replicate
         , Streamy.Conduit.replicateM
+        , Streamy.Conduit.any_
+        , Streamy.Conduit.all_
     ) where
 
 import qualified Conduit as C
@@ -108,4 +110,10 @@ replicate i a = CC.replicate i a
 
 replicateM :: Monad m => Int -> m a -> Stream a m ()
 replicateM i a = CC.replicateM i a
+
+all_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+all_ f c = C.connect c (CC.all f)
+
+any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+any_ f c = C.connect c (CC.any f)
 

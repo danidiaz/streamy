@@ -1,12 +1,10 @@
 # stuff to tackle next
 
 - Functions
-    - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
-    - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
     - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
     - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
-    - all_
-    - any_
+    - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
+    - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
     - sequence :: Monad m => Pipe (m a) a m r
     - takeWhileM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
 
@@ -18,8 +16,6 @@
     - breakWhen :: Monad m => (x -> a -> x) -> x -> (x -> b) -> (b -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
     - group :: (Monad m, Eq a) => Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - groupBy :: Monad m => (a -> a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
-
-- Applicative Sinks
 
 - Grouping operations (one level tops)
 

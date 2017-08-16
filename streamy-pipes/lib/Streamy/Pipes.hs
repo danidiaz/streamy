@@ -21,6 +21,8 @@ module Streamy.Pipes (
         , Streamy.Pipes.filterM
         , Streamy.Pipes.replicate
         , Streamy.Pipes.replicateM
+        , Streamy.Pipes.any_
+        , Streamy.Pipes.all_
     ) where
 
 import qualified Data.List
@@ -92,4 +94,10 @@ replicate i a = P.each $ Data.List.replicate i a
 
 replicateM :: Monad m => Int -> m a -> Stream a m ()
 replicateM i a = PP.replicateM i a 
+
+all_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+all_ = PP.all
+
+any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+any_ = PP.any
 

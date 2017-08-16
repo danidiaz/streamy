@@ -41,5 +41,7 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | filterM         | X | X | X |
     | replicate       | X | X | X |
     | replicateM      | X | X | X |
+    | all_            | X | X | X |
+    | any_            | X | X | X |
 
 

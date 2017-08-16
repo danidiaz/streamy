@@ -11,8 +11,10 @@ import qualified Test.Common.Streamy as Y
 import Data.Foldable hiding (concat)
 import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.Writer
 import Control.Concurrent.MVar
+import Data.IORef
 
 common :: [TestTree]
 common = 
@@ -33,6 +35,8 @@ common =
     , testCase "filterM" testFilterM
     , testCase "replicate" testReplicate
     , testCase "replicateM" testReplicateM
+    , testCase "all_" testAll_
+    , testCase "any_" testAny_
     ]
 
 basic :: Assertion
@@ -138,4 +142,37 @@ testReplicateM :: Assertion
 testReplicateM = do
     msg' <- Y.toList_ $ Y.replicateM 5 (pure 'a')
     assertEqual "acc" "aaaaa" msg'
+
+testAll_ :: Assertion
+testAll_ = do
+    ref <- newIORef True
+    res <- Y.all_ (<5) $ Y.yield (1::Int) 
+                         *> 
+                         Y.yield 2 
+                         *> 
+                         Y.yield 7 
+                         *> 
+                         lift (writeIORef ref False) 
+                         *> 
+                         Y.yield 8
+    ref' <- readIORef ref
+    assertEqual "result" False res
+    assertEqual "ref" True ref'
+
+testAny_ :: Assertion
+testAny_ = do
+    ref <- newIORef True
+    res <- Y.any_ (<5) $ Y.yield (8::Int) 
+                         *> 
+                         Y.yield 9 
+                         *> 
+                         Y.yield 2 
+                         *> 
+                         lift (writeIORef ref False) 
+                         *> 
+                         Y.yield 8
+    ref' <- readIORef ref
+    assertEqual "result" True res
+    assertEqual "ref" True ref'
+
 

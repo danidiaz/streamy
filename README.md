@@ -20,15 +20,19 @@ like:
 
 Things that *perhaps* could get included:
 
-- applicative sinks?
 - grouping operations?
+- bytestring-specific functionality?
+
+I don't plan to include a separate "applicative sink" datatype, but perhaps
+I will include a few fold functions.
 
 ## Structure of this project 
 
 - **streamy-sig** is the abstract signature.
-- **streamy-pipes** is the pipes bridge package.
-- **streamy-testsuite** makes several copies of the signature and matches each
-  one with a different implementation (only pipes for now). 
+- **streamy-pipes** is the pipes "bridge" package.
+- **streamy-streaming** 
+- **streamy-conduit** 
+- **streamy-testsuite** test each of the implementations using a shared set of tests.
 
 ## Do I need all these packages?
 
@@ -41,37 +45,6 @@ types line up.
 
 The advantage of these premade packages is not having to invent your own
 signatures and bridge modules.
-
-## Explanation of the "mixins" stanza
-
-In the package.cabal of the streamy-testsuite, we find the following:
-
-```
-mixins:
-    test-common 
-            (Test.Common as Test.Pipes.Common) 
-            requires (Test.Common.Streamy as Test.Pipes.Common.Streamy),
-    streamy-pipes (Streamy.Pipes as Test.Pipes.Common.Streamy)
-```
-
-What is happening here?
-
-From a Backpack perspective, libraries provide modules but also have "holes"
-(the signatures defined and/or used in the library). Libraries that only have
-signatures can be seen as "nothing but holes".
-
-Each entry in the mixins stanza creates a modified copy of a library
-dependency. In the copy, we can rename both the provided modules and the
-required "holes", the abstract signatures on which the provided modules depend. 
-
-We can make multiple copies of a library dependency, if we need to instantiate
-it in different ways.
-
-Backpack works by lining up signatures and implementation modules by name, and
-then checking that their contents match.
-
-For simple cases, it is often enough to simply "slide" an implementation module
-into the signature, and not bother renaming the signature at all.
 
 ## Building instructions
 
@@ -90,3 +63,6 @@ explains the usefulness of signature thinning (see also section 2.7 of the thesi
 
 The [str-sig](http://next.hackage.haskell.org:8080/package/str-sig) signature
 package and its various implementations.
+
+I wrote a few Backpack tips & tricks
+[here](https://medium.com/@danidiaz/backpacking-tips-3adb727bb8f7).

@@ -23,6 +23,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.filterM
         , Streamy.Streaming.replicate
         , Streamy.Streaming.replicateM
+        , Streamy.Streaming.all_
+        , Streamy.Streaming.any_
     ) where
 
 import Control.Monad
@@ -103,4 +105,10 @@ replicate i a = Stream $ Q.replicate i a
 
 replicateM :: Monad m => Int -> m a -> Stream a m ()
 replicateM i a = Stream $ Q.replicateM i a
+
+all_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+all_ f (Stream s) = Q.all_ f s
+
+any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
+any_ f (Stream s) = Q.any_ f s
 
