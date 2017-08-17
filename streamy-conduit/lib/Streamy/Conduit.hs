@@ -28,6 +28,8 @@ module Streamy.Conduit (
         , Streamy.Conduit.fold_
         , Streamy.Conduit.foldM
         , Streamy.Conduit.foldM_
+        , Streamy.Conduit.scan
+        , Streamy.Conduit.scanM
     ) where
 
 import qualified Conduit as C
@@ -38,6 +40,7 @@ import Data.Foldable (Foldable)
 import qualified Data.Foldable 
 import Data.Functor (void)
 import Data.Tuple (swap)
+import Control.Applicative
 import Control.Monad.Trans.Class
 
 type Stream = C.ConduitM ()
@@ -145,3 +148,15 @@ sinkFold combine seed extract = fmap extract (CL.fold combine seed)
 sinkFoldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> C.Consumer a m b
 sinkFoldM combine seed extract =
   lift . extract =<< CL.foldM combine =<< lift seed
+
+scan :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> Stream b m r
+scan step begin done c = 
+    let step' = \a s -> (step s a, done s)
+    in C.fuseUpstream c (CL.mapAccum step' begin >>= C.yield . done)
+
+scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
+scanM step begin done c = do
+    begin' <- lift begin
+    let step' = \a s -> liftA2 (,) (step s a) (done s)
+    C.fuseUpstream c (CL.mapAccumM step' begin' >>= lift . done >>= C.yield)
+

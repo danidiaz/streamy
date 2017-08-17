@@ -1,10 +1,10 @@
 # stuff to tackle next
 
 - Functions
-    - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
-    - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
     - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
+    - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
+    - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - sequence :: Monad m => Pipe (m a) a m r
     - takeWhileM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
 

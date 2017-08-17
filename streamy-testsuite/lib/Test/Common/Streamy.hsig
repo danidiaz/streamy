@@ -26,6 +26,8 @@ signature Test.Common.Streamy (
         , fold_
         , foldM
         , foldM_
+        , scan
+        , scanM
     ) where
 
 import Prelude () -- weird confusions otherwise

@@ -29,6 +29,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.fold_
         , Streamy.Streaming.foldM
         , Streamy.Streaming.foldM_
+        , Streamy.Streaming.scan
+        , Streamy.Streaming.scanM
     ) where
 
 import Control.Monad
@@ -127,6 +129,12 @@ foldM step begin done (Stream s) = toTup <$> Q.foldM step begin done s
 
 foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
 foldM_ step begin done (Stream s) = Q.foldM_ step begin done s 
+
+scan :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> Stream b m r
+scan step begin done (Stream s) = Stream $ Q.scan step begin done s
+
+scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
+scanM step begin done (Stream s) = Stream $ Q.scanM step begin done s
 
 toTup :: Of a r -> (a,r)
 toTup = \(a :> r) -> (a,r)

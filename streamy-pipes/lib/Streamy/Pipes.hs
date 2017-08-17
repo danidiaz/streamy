@@ -27,6 +27,8 @@ module Streamy.Pipes (
         , Streamy.Pipes.fold_
         , Streamy.Pipes.foldM
         , Streamy.Pipes.foldM_
+        , Streamy.Pipes.scan
+        , Streamy.Pipes.scanM
     ) where
 
 import qualified Data.List
@@ -116,4 +118,11 @@ foldM = PP.foldM'
 
 foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
 foldM_ = PP.foldM
+
+scan :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> Stream b m r
+scan step begin done producer = producer >-> PP.scan step begin done
+
+scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
+scanM step begin done producer = producer >-> PP.scanM step begin done
+
 

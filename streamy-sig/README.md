@@ -47,4 +47,5 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | fold_           | X | X | X |
     | foldM           | X | X | X |
     | foldM_          | X | X | X |
-
+    | scan            | X | X | X |
+    | scanM           | X | X | X |

@@ -42,6 +42,8 @@ common =
     , testCase "fold_" testFold_
     , testCase "foldM" testFoldM
     , testCase "foldM_" testFoldM_
+    , testCase "scan" testScan
+    , testCase "scanM" testScanM
     ]
 
 basic :: Assertion
@@ -209,3 +211,14 @@ testFoldM_ = do
     assertEqual "foldresult" (negate 13) b
     ref' <- readIORef ref
     assertBool "effectreamresult" ref'
+
+testScan :: Assertion
+testScan = do
+    res <- Y.toList_ . Y.scan (flip (:)) [] (map (*3)) $ Y.each [1::Int,2,3]
+    assertEqual "foldresult" [[],[3],[6,3],[9,6,3]] res
+
+testScanM :: Assertion
+testScanM = do
+    res <- Y.toList_ . Y.scanM (\x i -> pure $ i : x) (pure []) (pure . map (*3)) $ Y.each [1::Int,2,3]
+    assertEqual "foldresult" [[],[3],[6,3],[9,6,3]] res
+
