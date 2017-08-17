@@ -44,4 +44,3 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | all_            | X | X | X |
     | any_            | X | X | X |
 
-

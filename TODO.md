@@ -1,6 +1,10 @@
 # stuff to tackle next
 
 - Functions
+    - fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream (Of a) m r -> m (Of b r)
+    - fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream (Of a) m r -> m b
+    - foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream (Of a) m r -> m (Of b r)
+    - foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream (Of a) m r -> m b
     - enumFrom :: (Monad m, Enum n) => n -> Stream (Of n) m r
     - enumFromThen :: (Monad m, Enum a) => a -> a -> Stream (Of a) m r
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
