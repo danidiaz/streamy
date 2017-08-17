@@ -25,6 +25,10 @@ module Streamy.Streaming (
         , Streamy.Streaming.replicateM
         , Streamy.Streaming.all_
         , Streamy.Streaming.any_
+        , Streamy.Streaming.fold
+        , Streamy.Streaming.fold_
+        , Streamy.Streaming.foldM
+        , Streamy.Streaming.foldM_
     ) where
 
 import Control.Monad
@@ -50,7 +54,7 @@ each :: (Monad m, Foldable f) => f a -> Stream a m ()
 each x = Stream (Q.each x) 
 
 toList :: Monad m => Stream a m r -> m ([a],r)
-toList (Stream s) = fmap (\(as :> r) -> (as,r)) $ Q.toList s
+toList (Stream s) = toTup <$> Q.toList s
 
 toList_ :: Monad m => Stream a m () -> m [a]
 toList_ (Stream s) = Q.toList_ s
@@ -111,4 +115,19 @@ all_ f (Stream s) = Q.all_ f s
 
 any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 any_ f (Stream s) = Q.any_ f s
+
+fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m (b,r)
+fold step begin done (Stream s) = toTup <$> Q.fold step begin done s 
+
+fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m () -> m b
+fold_ step begin done (Stream s) = Q.fold_ step begin done s 
+
+foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m (b,r)
+foldM step begin done (Stream s) = toTup <$> Q.foldM step begin done s 
+
+foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
+foldM_ step begin done (Stream s) = Q.foldM_ step begin done s 
+
+toTup :: Of a r -> (a,r)
+toTup = \(a :> r) -> (a,r)
 

@@ -9,6 +9,7 @@ import Test.Common.Streamy (Stream)
 import qualified Test.Common.Streamy as Y
 
 import Data.Foldable hiding (concat)
+import Control.Applicative
 import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
@@ -37,6 +38,10 @@ common =
     , testCase "replicateM" testReplicateM
     , testCase "all_" testAll_
     , testCase "any_" testAny_
+    , testCase "fold" testFold
+    , testCase "fold_" testFold_
+    , testCase "foldM" testFoldM
+    , testCase "foldM_" testFoldM_
     ]
 
 basic :: Assertion
@@ -175,4 +180,32 @@ testAny_ = do
     assertEqual "result" True res
     assertEqual "ref" True ref'
 
+testFold :: Assertion
+testFold = do
+    (b,r) <- Y.fold (+) 7 negate $ Y.each [1::Int,2,3] *> return True
+    assertEqual "foldresult" (negate 13) b
+    assertBool "streamresult" r
+    
+testFold_ :: Assertion
+testFold_ = do
+    b <- Y.fold_ (+) 7 negate $ Y.each [1::Int,2,3] 
+    assertEqual "foldresult" (negate 13) b
+    
+testFoldM :: Assertion
+testFoldM = do
+    ref <- newIORef False
+    (b,r) <- Y.foldM (\x i -> pure $ x + i) (pure 7) (\acc -> writeIORef ref True *> pure (negate acc)) $ 
+                Y.each [1::Int,2,3] *> return True
+    assertEqual "foldresult" (negate 13) b
+    assertBool "streamresult" r
+    ref' <- readIORef ref
+    assertBool "effectreamresult" ref'
 
+testFoldM_ :: Assertion
+testFoldM_ = do
+    ref <- newIORef False
+    b <- Y.foldM_ (\x i -> pure $ x + i) (pure 7) (\acc -> writeIORef ref True *> pure (negate acc)) $ 
+                Y.each [1::Int,2,3]
+    assertEqual "foldresult" (negate 13) b
+    ref' <- readIORef ref
+    assertBool "effectreamresult" ref'

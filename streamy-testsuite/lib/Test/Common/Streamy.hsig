@@ -22,6 +22,10 @@ signature Test.Common.Streamy (
         , replicateM
         , all_
         , any_
+        , fold
+        , fold_
+        , foldM
+        , foldM_
     ) where
 
 import Prelude () -- weird confusions otherwise

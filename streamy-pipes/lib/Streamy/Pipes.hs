@@ -23,6 +23,10 @@ module Streamy.Pipes (
         , Streamy.Pipes.replicateM
         , Streamy.Pipes.any_
         , Streamy.Pipes.all_
+        , Streamy.Pipes.fold
+        , Streamy.Pipes.fold_
+        , Streamy.Pipes.foldM
+        , Streamy.Pipes.foldM_
     ) where
 
 import qualified Data.List
@@ -100,4 +104,16 @@ all_ = PP.all
 
 any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 any_ = PP.any
+
+fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m (b,r)
+fold = PP.fold'
+
+fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m () -> m b
+fold_ = PP.fold
+
+foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m (b,r)
+foldM = PP.foldM'
+
+foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
+foldM_ = PP.foldM
 

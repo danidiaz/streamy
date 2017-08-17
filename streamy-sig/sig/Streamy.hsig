@@ -63,6 +63,7 @@ all_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 
 fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m (b,r)
-fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m b
+fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m () -> m b
 foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m (b,r)
-foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m b
+foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
+

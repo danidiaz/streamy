@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 module Streamy.Conduit (
           Stream
         , yield
@@ -23,6 +24,10 @@ module Streamy.Conduit (
         , Streamy.Conduit.replicateM
         , Streamy.Conduit.any_
         , Streamy.Conduit.all_
+        , Streamy.Conduit.fold
+        , Streamy.Conduit.fold_
+        , Streamy.Conduit.foldM
+        , Streamy.Conduit.foldM_
     ) where
 
 import qualified Conduit as C
@@ -33,6 +38,7 @@ import Data.Foldable (Foldable)
 import qualified Data.Foldable 
 import Data.Functor (void)
 import Data.Tuple (swap)
+import Control.Monad.Trans.Class
 
 type Stream = C.ConduitM ()
 
@@ -78,7 +84,7 @@ take :: Monad m => Int -> Stream o m r -> Stream o m ()
 take i c = C.fuse (fmap (const ()) c) $ CC.take i
 
 takeWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m ()
-takeWhile f c = C.fuse (fmap (const ()) c) $ CC.takeWhile f
+takeWhile f c = C.fuse (void c) $ CC.takeWhile f
 
 map :: Monad m => (a -> b) -> Stream a m r -> Stream b m r 
 map f c = C.fuseUpstream c (CC.map f)
@@ -117,3 +123,25 @@ all_ f c = C.connect c (CC.all f)
 any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 any_ f c = C.connect c (CC.any f)
 
+fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m (b,r)
+fold step begin done c = fmap swap $ C.runConduit $ C.fuseBoth c (sinkFold step begin done) 
+
+fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m () -> m b
+fold_ step begin done c = C.connect c (sinkFold step begin done)
+
+foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m (b,r)
+foldM step begin done c = fmap swap $ C.runConduit $ C.fuseBoth c (sinkFoldM step begin done) 
+
+foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
+foldM_ step begin done c = C.connect c (sinkFoldM step begin done)
+
+-- Copied from conduit-extra
+-- http://hackage.haskell.org/package/conduit-extra-1.1.16/docs/src/Data-Conduit-Foldl.html#sinkFold 
+sinkFold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> C.Consumer a m b
+sinkFold combine seed extract = fmap extract (CL.fold combine seed)
+
+-- Copied from conduit-extra
+-- http://hackage.haskell.org/package/conduit-extra-1.1.16/docs/Data-Conduit-Foldl.html#v:sinkFoldM
+sinkFoldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> C.Consumer a m b
+sinkFoldM combine seed extract =
+  lift . extract =<< CL.foldM combine =<< lift seed

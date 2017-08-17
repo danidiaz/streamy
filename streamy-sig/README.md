@@ -43,4 +43,8 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | replicateM      | X | X | X |
     | all_            | X | X | X |
     | any_            | X | X | X |
+    | fold            | X | X | X |
+    | fold_           | X | X | X |
+    | foldM           | X | X | X |
+    | foldM_          | X | X | X |
 
