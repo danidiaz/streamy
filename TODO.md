@@ -24,3 +24,17 @@
     - fromChunks, toChunks
     - grouped bytes
     
+## Does the following make sense?
+
+delimit :: (x -> a -> (x,NonEmpty [b])) 
+        -> x 
+        -> (x -> NonEmpty [b])
+        -> Stream (Of a) m r 
+        -> Stream (Stream (Of b) m) m r
+
+delimitM :: (x -> a -> Stream (Of b) m (Stream (Stream (Of b) m) m x))
+         -> m x 
+         -> (x -> Stream (Of b) (Stream m (Stream (Of b) m) m ()))
+         -> Stream (Of a) m r 
+         -> Stream (Stream (Of b) m) m r
+
