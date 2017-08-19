@@ -15,7 +15,16 @@
     - break :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
     - breakWhen :: Monad m => (x -> a -> x) -> x -> (x -> b) -> (b -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
     - group :: (Monad m, Eq a) => Stream (Of a) m r -> Stream (Stream (Of a) m) m r
+    - maps :: (Monad m, Functor f) => (forall x. f x -> g x) -> Stream f m r -> Stream g m r
+    - concats :: (Monad m, Functor f) => Stream (Stream f m) m r -> Stream f m r
     - groupBy :: Monad m => (a -> a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
+    - chunksOf :: (Monad m, Functor f) => Int -> Stream f m r -> Stream (Stream f m) m r
+    - intercalates :: (Monad m, Functor f) => Stream f m () -> Stream (Stream f m) m r -> Stream f m r 
+    - yields :: (Monad m, Functor f) => f r -> Stream f m r Source #
+    
+      yields is like lift for items in the streamed functor. It makes a singleton or one-layer succession.
+    - takes :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m ()
+    - wrap :: (Monad m, Functor f) => f (Stream f m r) -> Stream f m r
 
 - Grouping operations (one level tops)
 

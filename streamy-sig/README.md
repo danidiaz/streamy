@@ -10,11 +10,12 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     P   | Streamy.Pipes
     C   | Streamy.Conduit
 
-**Stream types**
+**Types**
 
     |                 | S | P | C |
     |-----------------|---|---|---|
     | Stream          | X | X | X |
+    | Groups          |   |   |   |
 
 **Basic functions**
 
@@ -49,3 +50,12 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | foldM_          | X | X | X |
     | scan            | X | X | X |
     | scanM           | X | X | X |
+
+**Splitting and grouping functions**
+
+    |                 | S | P | C |
+    |-----------------|---|---|---|
+    | group           |   |   |   |
+    | groupBy         |   |   |   |
+
+
