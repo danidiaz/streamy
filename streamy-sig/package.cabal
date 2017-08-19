@@ -13,7 +13,6 @@ cabal-version:       >= 2
 
 library
   signatures:          Streamy
-                       Streamy.Group
   build-depends:       base >= 4.10 && < 4.11   ,
                        transformers > 0.5       ,
                        mmorph >= 1.0.0
