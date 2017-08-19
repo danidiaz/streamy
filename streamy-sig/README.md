@@ -44,6 +44,7 @@ matrix saying which functions are supported by which libraries.
     |-----------------|---|---|---|
     | Stream          | X | X | X |
     | Groups          | X | X | X |
+    | Index           | X | X | X |
 
 **Basic functions**
 

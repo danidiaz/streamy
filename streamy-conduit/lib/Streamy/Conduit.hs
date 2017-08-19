@@ -4,6 +4,7 @@ module Streamy.Conduit (
           Stream
         , Groups
         , WrappedGroups(..)
+        , Index
         , yield
         , each
         , toList
@@ -61,6 +62,8 @@ newtype WrappedGroups o m r = Groups { getGroups :: FreeT (C.ConduitM () o m) m 
 
 instance MonadTrans (WrappedGroups o) where
     lift x = Groups (lift x)
+
+type Index = Int
 
 yield :: Monad m => o -> Stream o m ()
 yield = C.yield

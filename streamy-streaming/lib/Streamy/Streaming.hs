@@ -5,6 +5,7 @@ module Streamy.Streaming (
         , WrappedStream(..)
         , Groups
         , WrappedGroups(..)
+        , Index
         , yield
         , each
         , toList
@@ -71,6 +72,8 @@ newtype WrappedGroups o m r = Groups { getGroups :: Q.Stream (Q.Stream (Of o) m)
 
 instance MonadTrans (WrappedGroups o) where
     lift x = Groups (lift x)
+
+type Index = Int
 
 yield :: Monad m => o -> Stream o m ()
 yield x = Stream (Q.yield x)

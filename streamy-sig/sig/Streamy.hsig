@@ -2,7 +2,8 @@
 {-# LANGUAGE RankNTypes #-}
 signature Streamy where
 
-import Prelude (Functor,Applicative,Foldable,Eq,Int,Bool)
+import Prelude (Functor,Applicative,Foldable,Enum,Eq,Integral,Num,Ord,Read,Real,Show,Bool)
+import Data.Ix (Ix)
 import Control.Monad (Monad)
 import Control.Monad.Trans.Class (MonadTrans)
 import Control.Monad.IO.Class (MonadIO)
@@ -25,6 +26,18 @@ instance Monad m => Monad (Groups o m)
 instance MonadIO m => MonadIO (Groups o m) 
 instance MonadTrans (Groups o)
 
+data Index :: *
+
+instance Enum Index
+instance Eq Index
+instance Integral Index
+instance Num Index
+instance Ord Index
+instance Read Index
+instance Real Index
+instance Show Index
+instance Ix Index
+
 yield :: Monad m => o -> Stream o m ()
 
 each :: (Monad m, Foldable f) => f a -> Stream a m ()
@@ -45,7 +58,7 @@ repeat :: Monad m => a -> Stream a m r
 
 repeatM :: Monad m => m a -> Stream a m r
 
-take :: Monad m => Int -> Stream o m r -> Stream o m () 
+take :: Monad m => Index -> Stream o m r -> Stream o m () 
 
 takeWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m ()
 
@@ -55,7 +68,7 @@ mapM :: Monad m => (a -> m b) -> Stream a m r -> Stream b m r
 
 mapM_ :: Monad m => (a -> m b) -> Stream a m r -> m r
 
-drop :: Monad m => Int -> Stream a m r -> Stream a m r
+drop :: Monad m => Index -> Stream a m r -> Stream a m r
 
 dropWhile :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 
@@ -63,9 +76,9 @@ filter :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m r
 
 filterM :: Monad m => (a -> m Bool) -> Stream a m r -> Stream a m r
 
-replicate :: Monad m => Int -> a -> Stream a m ()
+replicate :: Monad m => Index -> a -> Stream a m ()
 
-replicateM :: Monad m => Int -> m a -> Stream a m ()
+replicateM :: Monad m => Index -> m a -> Stream a m ()
 
 all_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 
@@ -83,7 +96,7 @@ group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
 
 groupBy :: Monad m => (a -> a -> Bool) -> Stream a m r -> Groups a m r
 
-chunksOf :: Monad m => Int -> Stream a m r -> Groups a m r 
+chunksOf :: Monad m => Index -> Stream a m r -> Groups a m r 
 
 maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 
@@ -93,9 +106,9 @@ intercalates :: Monad m => Stream a m () -> Groups a m r -> Stream a m r
 
 yields :: Monad m => Stream a m r -> Groups a m r
 
-takes :: Monad m => Int -> Groups a m () -> Groups a m ()
+takes :: Monad m => Index -> Groups a m () -> Groups a m ()
 
-splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
+splitAt :: Monad m => Index -> Stream a m r -> Stream a m (Stream a m r)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 

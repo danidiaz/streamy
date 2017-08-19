@@ -4,6 +4,7 @@ module Streamy.Pipes (
           Stream
         , Groups
         , WrappedGroups(..)
+        , Index
         , yield
         , toList
         , toList_
@@ -70,6 +71,8 @@ newtype WrappedGroups o m r = Groups { getGroups :: PG.FreeT (P.Producer o m) m 
 
 instance MonadTrans (WrappedGroups o) where
     lift x = Groups (lift x)
+
+type Index = Int
 
 yield :: Monad m => o -> Stream o m ()
 yield = P.yield

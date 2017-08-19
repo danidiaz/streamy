@@ -1,6 +1,7 @@
 signature Test.Common.Streamy (
           Stream
         , Groups
+        , Index
         , yield
         , each
         , toList
