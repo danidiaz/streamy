@@ -21,7 +21,7 @@ Library-specific features that are not covered:
 - *pipe*'s bidirectionality.
 - *conduit*'s integrated leftovers.
 - *streaming*'s ability to use different functors.
-- any kind of single-stepping (too different across libraries).
+- any kind of single-stepping.
 
 The signature doesn't provide applicative sinks as a separate type, but the
 various fold functions allow interoperability with the folds in the *foldl*
@@ -84,7 +84,10 @@ matrix saying which functions are supported by which libraries.
     |                 | S | P | C |
     |-----------------|---|---|---|
     | group           | X | X |   |
+    | groupBy         | X | X |   |
     | maps            | X | X |   |
     | concats         | X | X |   |
     | yields          | X | X |   |
+
+
 

@@ -35,6 +35,7 @@ module Streamy.Streaming (
         , Streamy.Streaming.scan
         , Streamy.Streaming.scanM
         , Streamy.Streaming.group
+        , Streamy.Streaming.groupBy
         , Streamy.Streaming.maps
         , Streamy.Streaming.concats
         , Streamy.Streaming.yields
@@ -155,6 +156,9 @@ scanM step begin done (Stream s) = Stream $ Q.scanM step begin done s
 
 group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
 group (Stream s) = Groups (Q.group s)
+
+groupBy :: Monad m => (a -> a -> Bool) -> Stream a m r -> Groups a m r
+groupBy f (Stream s) = Groups $ Q.groupBy f s 
 
 maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 maps f (Groups gs) = Groups $ Q.maps (getStream . f . Stream) gs
