@@ -17,6 +17,7 @@ library
                        pipes >= 4.3.4           ,
                        pipes-group >= 1.0.7     ,
                        transformers > 0.5       ,
-                       free >=3.2 && <5
+                       free >=3.2 && <5         ,
+                       microlens >= 0.4.8.0
   hs-source-dirs:      lib
   default-language:    Haskell2010
