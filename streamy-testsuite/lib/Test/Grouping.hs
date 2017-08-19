@@ -21,6 +21,7 @@ grouping :: [TestTree]
 grouping = 
     [ testCase "group-map-concats" basic 
     , testCase "groupBy" testGroupBy
+    , testCase "intercalates" testIntercalates
     , testCase "yields" testYields
     ]
 
@@ -33,6 +34,11 @@ testGroupBy :: Assertion
 testGroupBy = do
    r <- Y.toList_ . Y.concats . Y.maps (\s -> Y.yield '<' *> s <* Y.yield '>') . Y.groupBy (==) $ Y.each "aabbcc"
    assertEqual "" "<aa><bb><cc>" r
+
+testIntercalates :: Assertion
+testIntercalates = do
+   r <- Y.toList_ . Y.intercalates (Y.each "||") . Y.group $ Y.each "aabbcc"
+   assertEqual "" "aa||bb||cc" r
 
 testYields :: Assertion
 testYields = do

@@ -38,6 +38,7 @@ module Streamy.Streaming (
         , Streamy.Streaming.groupBy
         , Streamy.Streaming.maps
         , Streamy.Streaming.concats
+        , Streamy.Streaming.intercalates
         , Streamy.Streaming.yields
     ) where
 
@@ -165,6 +166,9 @@ maps f (Groups gs) = Groups $ Q.maps (getStream . f . Stream) gs
 
 concats :: Monad m => Groups a m r -> Stream a m r
 concats (Groups gs) = Stream $ Q.concats gs
+
+intercalates :: Monad m => Stream a m () -> Groups a m r -> Stream a m r 
+intercalates (Stream s) (Groups gs) = Stream $ Q.intercalates s gs
 
 yields :: Monad m => Stream a m r -> Groups a m r
 yields (Stream s) = Groups $ Q.yields s

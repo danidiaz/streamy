@@ -87,6 +87,7 @@ matrix saying which functions are supported by which libraries.
     | groupBy         | X | X |   |
     | maps            | X | X |   |
     | concats         | X | X |   |
+    | intercalates    | X | X |   |
     | yields          | X | X |   |
 
 

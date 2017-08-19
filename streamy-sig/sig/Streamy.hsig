@@ -87,6 +87,8 @@ maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> G
 
 concats :: Monad m => Groups a m r -> Stream a m r
 
+intercalates :: Monad m => Stream a m () -> Groups a m r -> Stream a m r 
+
 yields :: Monad m => Stream a m r -> Groups a m r
 
 

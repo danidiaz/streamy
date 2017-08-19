@@ -37,6 +37,7 @@ module Streamy.Pipes (
         , Streamy.Pipes.groupBy
         , Streamy.Pipes.maps
         , Streamy.Pipes.concats
+        , Streamy.Pipes.intercalates
         , Streamy.Pipes.yields
     ) where
 
@@ -163,6 +164,9 @@ maps f (Groups gs) = Groups $ PG.maps f gs
 
 concats :: Monad m => Groups a m r -> Stream a m r
 concats (Groups gs) = PG.concats gs
+
+intercalates :: Monad m => Stream a m () -> Groups a m r -> Stream a m r 
+intercalates producer (Groups gs) = PG.intercalates producer gs
 
 yields :: Monad m => Stream a m r -> Groups a m r
 yields producer = Groups $ liftF producer

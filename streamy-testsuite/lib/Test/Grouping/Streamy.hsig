@@ -33,6 +33,7 @@ signature Test.Grouping.Streamy (
         , groupBy
         , maps
         , concats
+        , intercalates
         , yields
     ) where
 
