@@ -37,6 +37,7 @@ module Streamy.Streaming (
         , Streamy.Streaming.group
         , Streamy.Streaming.maps
         , Streamy.Streaming.concats
+        , Streamy.Streaming.yields
     ) where
 
 import Control.Monad
@@ -160,6 +161,9 @@ maps f (Groups gs) = Groups $ Q.maps (getStream . f . Stream) gs
 
 concats :: Monad m => Groups a m r -> Stream a m r
 concats (Groups gs) = Stream $ Q.concats gs
+
+yields :: Monad m => Stream a m r -> Groups a m r
+yields (Stream s) = Groups $ Q.yields s
 
 --
 toTup :: Of a r -> (a,r)

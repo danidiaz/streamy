@@ -20,9 +20,17 @@ import Data.IORef
 grouping :: [TestTree]
 grouping = 
     [ testCase "group-map-concats" basic 
+    , testCase "yields" testYields
     ]
 
 basic :: Assertion
 basic = do
    r <- Y.toList_ . Y.concats . Y.maps (\s -> Y.yield '<' *> s <* Y.yield '>') . Y.group $ Y.each "aabbcc"
    assertEqual "" "<aa><bb><cc>" r
+
+testYields :: Assertion
+testYields = do
+   r <- Y.toList_ . Y.concats . Y.yields $ Y.each "aaa" *> Y.each "bbb"
+   assertEqual "" "aaabbb" r
+
+

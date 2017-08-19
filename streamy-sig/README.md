@@ -29,7 +29,8 @@ package.
 
 ## Feature matrix
 
-There are gaps in coverage in implementation of functions.  Below is a feature matrix saying which functions are supported by which libraries.
+There are gaps in coverage in implementation of functions.  Below is a feature
+matrix saying which functions are supported by which libraries.
 
     Key | Module name
     ----|--------------------------
@@ -85,5 +86,5 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     | group           | X | X |   |
     | maps            | X | X |   |
     | concats         | X | X |   |
-
+    | yields          | X | X |   |
 

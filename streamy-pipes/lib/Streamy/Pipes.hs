@@ -36,6 +36,7 @@ module Streamy.Pipes (
         , Streamy.Pipes.group
         , Streamy.Pipes.maps
         , Streamy.Pipes.concats
+        , Streamy.Pipes.yields
     ) where
 
 import qualified Data.List
@@ -46,6 +47,7 @@ import qualified Pipes.Group as PG
 
 import Control.Monad
 import Control.Monad.Trans.Class
+import Control.Monad.Trans.Free (liftF)
 import Control.Monad.IO.Class
 
 import Lens.Micro.Extras (view)
@@ -158,3 +160,5 @@ maps f (Groups gs) = Groups $ PG.maps f gs
 concats :: Monad m => Groups a m r -> Stream a m r
 concats (Groups gs) = PG.concats gs
 
+yields :: Monad m => Stream a m r -> Groups a m r
+yields producer = Groups $ liftF producer
