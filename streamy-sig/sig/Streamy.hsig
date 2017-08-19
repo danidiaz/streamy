@@ -83,6 +83,6 @@ group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
 
 maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 
-concats :: Groups a m r -> Stream a m r
+concats :: Monad m => Groups a m r -> Stream a m r
 
 

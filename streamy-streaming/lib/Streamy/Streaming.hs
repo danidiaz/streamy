@@ -1,4 +1,5 @@
-{-# language GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE RankNTypes #-}
 module Streamy.Streaming (
           Stream
         , WrappedStream(..)
@@ -33,6 +34,9 @@ module Streamy.Streaming (
         , Streamy.Streaming.foldM_
         , Streamy.Streaming.scan
         , Streamy.Streaming.scanM
+        , Streamy.Streaming.group
+        , Streamy.Streaming.maps
+        , Streamy.Streaming.concats
     ) where
 
 import Control.Monad
@@ -148,6 +152,16 @@ scan step begin done (Stream s) = Stream $ Q.scan step begin done s
 scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
 scanM step begin done (Stream s) = Stream $ Q.scanM step begin done s
 
+group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
+group (Stream s) = Groups (Q.group s)
+
+maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
+maps f (Groups gs) = Groups $ Q.maps (getStream . f . Stream) gs
+
+concats :: Monad m => Groups a m r -> Stream a m r
+concats (Groups gs) = Stream $ Q.concats gs
+
+--
 toTup :: Of a r -> (a,r)
 toTup = \(a :> r) -> (a,r)
 

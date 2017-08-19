@@ -1,5 +1,5 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RankNTypes #-}
-{-# language GeneralizedNewtypeDeriving #-}
 module Streamy.Conduit (
           Stream
         , Groups

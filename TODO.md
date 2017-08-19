@@ -9,9 +9,8 @@
     - takeWhileM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
 
 - Splitting and grouping functions (Streaming + Pipes only)
-    - group :: (Monad m, Eq a) => Stream (Of a) m r -> Stream (Stream (Of a) m) m r
-    - maps :: (Monad m, Functor f) => (forall x. f x -> g x) -> Stream f m r -> Stream g m r
-    - concats :: (Monad m, Functor f) => Stream (Stream f m) m r -> Stream f m r
+    - folds :: Monad m => (x -> a -> x) -> x -> (x -> b) -> FreeT (Producer a m) m r -> Producer b m r
+    - foldsM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> FreeT (Producer a m) m r -> Producer b m r
     - splitAt :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m (Stream f m r)
     - split :: (Eq a, Monad m) => a -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - breaks :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r

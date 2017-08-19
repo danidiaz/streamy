@@ -29,6 +29,9 @@ signature Test.Grouping.Streamy (
         , foldM_
         , scan
         , scanM
+        , group
+        , maps
+        , concats
     ) where
 
 import Prelude () -- weird confusions otherwise

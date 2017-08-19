@@ -1,4 +1,5 @@
-{-# language GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE RankNTypes #-}
 module Streamy.Pipes (
           Stream
         , Groups
@@ -32,6 +33,9 @@ module Streamy.Pipes (
         , Streamy.Pipes.foldM_
         , Streamy.Pipes.scan
         , Streamy.Pipes.scanM
+        , Streamy.Pipes.group
+        , Streamy.Pipes.maps
+        , Streamy.Pipes.concats
     ) where
 
 import qualified Data.List
@@ -43,6 +47,8 @@ import qualified Pipes.Group as PG
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.IO.Class
+
+import Lens.Micro.Extras (view)
 
 type Stream = Proxy X () ()
 
@@ -143,4 +149,12 @@ scan step begin done producer = producer >-> PP.scan step begin done
 scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
 scanM step begin done producer = producer >-> PP.scanM step begin done
 
+group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
+group producer = Groups (view PG.groups producer)
+
+maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
+maps f (Groups gs) = Groups $ PG.maps f gs
+
+concats :: Monad m => Groups a m r -> Stream a m r
+concats (Groups gs) = PG.concats gs
 

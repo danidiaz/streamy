@@ -55,8 +55,8 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
 
     |                 | S | P | C |
     |-----------------|---|---|---|
-    | group           |   |   |   |
-    | maps            |   |   |   |
-    | concats         |   |   |   |
+    | group           | X | X |   |
+    | maps            | X | X |   |
+    | concats         | X | X |   |
 
 
