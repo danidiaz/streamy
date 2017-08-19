@@ -1,7 +1,5 @@
 # stuff to tackle next
 
-- Make the Int parameters abstract.
-
 - Functions
     - iterate :: Monad m => (a -> a) -> a -> Stream (Of a) m r 
     - iterateM :: Monad m => (a -> m a) -> m a -> Stream (Of a) m r
