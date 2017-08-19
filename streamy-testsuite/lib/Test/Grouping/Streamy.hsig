@@ -31,10 +31,12 @@ signature Test.Grouping.Streamy (
         , scanM
         , group
         , groupBy
+        , chunksOf
         , maps
         , concats
         , intercalates
         , yields
+        , takes
     ) where
 
 import Prelude () -- weird confusions otherwise

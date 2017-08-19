@@ -36,10 +36,12 @@ module Streamy.Streaming (
         , Streamy.Streaming.scanM
         , Streamy.Streaming.group
         , Streamy.Streaming.groupBy
+        , Streamy.Streaming.chunksOf
         , Streamy.Streaming.maps
         , Streamy.Streaming.concats
         , Streamy.Streaming.intercalates
         , Streamy.Streaming.yields
+        , Streamy.Streaming.takes
     ) where
 
 import Control.Monad
@@ -161,6 +163,9 @@ group (Stream s) = Groups (Q.group s)
 groupBy :: Monad m => (a -> a -> Bool) -> Stream a m r -> Groups a m r
 groupBy f (Stream s) = Groups $ Q.groupBy f s 
 
+chunksOf :: Monad m => Int -> Stream a m r -> Groups a m r 
+chunksOf i (Stream s) = Groups $ Q.chunksOf i s
+
 maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 maps f (Groups gs) = Groups $ Q.maps (getStream . f . Stream) gs
 
@@ -172,6 +177,9 @@ intercalates (Stream s) (Groups gs) = Stream $ Q.intercalates s gs
 
 yields :: Monad m => Stream a m r -> Groups a m r
 yields (Stream s) = Groups $ Q.yields s
+
+takes :: Monad m => Int -> Groups a m () -> Groups a m ()
+takes i (Groups gs) = Groups $ Q.takes i gs 
 
 --
 toTup :: Of a r -> (a,r)

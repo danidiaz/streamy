@@ -85,10 +85,12 @@ matrix saying which functions are supported by which libraries.
     |-----------------|---|---|---|
     | group           | X | X |   |
     | groupBy         | X | X |   |
+    | chunksOf        | X | X |   |
     | maps            | X | X |   |
     | concats         | X | X |   |
     | intercalates    | X | X |   |
     | yields          | X | X |   |
+    | takes           | X | X |   |
 
 
 

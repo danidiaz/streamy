@@ -35,10 +35,12 @@ module Streamy.Pipes (
         , Streamy.Pipes.scanM
         , Streamy.Pipes.group
         , Streamy.Pipes.groupBy
+        , Streamy.Pipes.chunksOf
         , Streamy.Pipes.maps
         , Streamy.Pipes.concats
         , Streamy.Pipes.intercalates
         , Streamy.Pipes.yields
+        , Streamy.Pipes.takes
     ) where
 
 import qualified Data.List
@@ -159,6 +161,9 @@ group producer = Groups (view PG.groups producer)
 groupBy :: Monad m => (a -> a -> Bool) -> Stream a m r -> Groups a m r
 groupBy f producer = Groups (view (PG.groupsBy f) producer)
 
+chunksOf :: Monad m => Int -> Stream a m r -> Groups a m r 
+chunksOf i producer = Groups (view (PG.chunksOf i) producer)
+
 maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 maps f (Groups gs) = Groups $ PG.maps f gs
 
@@ -170,3 +175,6 @@ intercalates producer (Groups gs) = PG.intercalates producer gs
 
 yields :: Monad m => Stream a m r -> Groups a m r
 yields producer = Groups $ liftF producer
+
+takes :: Monad m => Int -> Groups a m () -> Groups a m ()
+takes i (Groups gs) = Groups $ PG.takes i gs 
