@@ -25,6 +25,8 @@ grouping =
     , testCase "intercalates" testIntercalates
     , testCase "yields" testYields
     , testCase "takes" testTakes
+    , testCase "splitAt" testSplitAt
+    , testCase "span" testSpan
     ]
 
 basic :: Assertion
@@ -56,3 +58,18 @@ testTakes :: Assertion
 testTakes = do
    r <- Y.toList_ . Y.concats . Y.takes 2 . Y.groupBy (==) $ Y.each "aabbcc"
    assertEqual "" "aabb" r
+
+testSplitAt :: Assertion
+testSplitAt = do
+   (str1,r) <- Y.toList . Y.splitAt 3 $ Y.each "aabbcc"
+   str2 <- Y.toList_ r
+   assertEqual "" "aab" str1
+   assertEqual "" "bcc" str2
+
+testSpan :: Assertion
+testSpan = do
+   (str1,r) <- Y.toList . Y.span (< 'd') $ Y.each "abcdefg"
+   str2 <- Y.toList_ r
+   assertEqual "" "abc" str1
+   assertEqual "" "defg" str2
+

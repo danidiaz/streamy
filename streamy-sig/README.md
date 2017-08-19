@@ -91,6 +91,6 @@ matrix saying which functions are supported by which libraries.
     | intercalates    | X | X |   |
     | yields          | X | X |   |
     | takes           | X | X |   |
-
-
+    | splitAt         | X | X |   |
+    | span            | X | X |   |
 

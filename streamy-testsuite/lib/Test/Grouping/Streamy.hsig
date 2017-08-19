@@ -37,6 +37,8 @@ signature Test.Grouping.Streamy (
         , intercalates
         , yields
         , takes
+        , splitAt
+        , span
     ) where
 
 import Prelude () -- weird confusions otherwise

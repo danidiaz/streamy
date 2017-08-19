@@ -95,4 +95,7 @@ yields :: Monad m => Stream a m r -> Groups a m r
 
 takes :: Monad m => Int -> Groups a m () -> Groups a m ()
 
+splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
+
+span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 

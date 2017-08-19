@@ -13,11 +13,10 @@
 - Splitting and grouping functions (Streaming + Pipes only)
     - folds :: Monad m => (x -> a -> x) -> x -> (x -> b) -> FreeT (Producer a m) m r -> Producer b m r
     - foldsM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> FreeT (Producer a m) m r -> Producer b m r
-    - splitAt :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m (Stream f m r)
-    - split :: (Eq a, Monad m) => a -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - breaks :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - break :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
     - breakWhen :: Monad m => (x -> a -> x) -> x -> (x -> b) -> (b -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
+    - split :: (Eq a, Monad m) => a -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - wrap :: (Monad m, Functor f) => f (Stream f m r) -> Stream f m r
 
 - Streamy.Bytes (in a separate package?)

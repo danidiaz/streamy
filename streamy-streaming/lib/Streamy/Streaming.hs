@@ -42,6 +42,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.intercalates
         , Streamy.Streaming.yields
         , Streamy.Streaming.takes
+        , Streamy.Streaming.splitAt
+        , Streamy.Streaming.span
     ) where
 
 import Control.Monad
@@ -180,6 +182,12 @@ yields (Stream s) = Groups $ Q.yields s
 
 takes :: Monad m => Int -> Groups a m () -> Groups a m ()
 takes i (Groups gs) = Groups $ Q.takes i gs 
+
+splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
+splitAt i (Stream s) = Stream <$> Stream (Q.splitAt i s)
+
+span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
+span f (Stream s) = Stream <$> Stream (Q.span f s)
 
 --
 toTup :: Of a r -> (a,r)

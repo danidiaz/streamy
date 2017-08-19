@@ -41,6 +41,8 @@ module Streamy.Pipes (
         , Streamy.Pipes.intercalates
         , Streamy.Pipes.yields
         , Streamy.Pipes.takes
+        , Streamy.Pipes.splitAt
+        , Streamy.Pipes.span
     ) where
 
 import qualified Data.List
@@ -48,6 +50,7 @@ import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
 import qualified Pipes.Prelude as PP
 import qualified Pipes.Group as PG
+import qualified Pipes.Parse
 
 import Control.Monad
 import Control.Monad.Trans.Class
@@ -178,3 +181,10 @@ yields producer = Groups $ liftF producer
 
 takes :: Monad m => Int -> Groups a m () -> Groups a m ()
 takes i (Groups gs) = Groups $ PG.takes i gs 
+
+splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
+splitAt i producer = view (Pipes.Parse.splitAt i) producer
+
+span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
+span f producer = view (Pipes.Parse.span f) producer
+
