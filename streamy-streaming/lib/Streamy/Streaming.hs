@@ -2,6 +2,8 @@
 module Streamy.Streaming (
           Stream
         , WrappedStream(..)
+        , Groups
+        , WrappedGroups(..)
         , yield
         , each
         , toList
@@ -48,6 +50,16 @@ type Stream = WrappedStream
 -- "Illegal parameterized type synonym in implementation of abstract data." error.
 newtype WrappedStream o m r = Stream { getStream :: Q.Stream (Of o) m r } 
         deriving (Functor,Applicative,Monad,MonadIO,MonadTrans,MFunctor)
+
+type Groups = WrappedGroups
+
+-- This newtype is necessary to avoid a
+-- "Illegal parameterized type synonym in implementation of abstract data." error.
+newtype WrappedGroups o m r = Groups { getGroups :: Q.Stream (Q.Stream (Of o) m) m r } 
+        deriving (Functor,Applicative,Monad,MonadIO)
+
+instance MonadTrans (WrappedGroups o) where
+    lift x = Groups (lift x)
 
 yield :: Monad m => o -> Stream o m ()
 yield x = Stream (Q.yield x)

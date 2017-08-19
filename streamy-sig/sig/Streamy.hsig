@@ -17,6 +17,14 @@ instance MonadIO m => MonadIO (Stream o m)
 instance MonadTrans (Stream o)
 instance MFunctor (Stream o) 
 
+data Groups :: * -> (* -> *) -> * -> *
+
+instance Monad m => Functor (Groups o m)
+instance Monad m => Applicative (Groups o m)
+instance Monad m => Monad (Groups o m)
+instance MonadIO m => MonadIO (Groups o m) 
+instance MonadTrans (Groups o)
+
 yield :: Monad m => o -> Stream o m ()
 
 each :: (Monad m, Foldable f) => f a -> Stream a m ()
@@ -71,18 +79,10 @@ foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m 
 scan :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> Stream b m r
 scanM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> Stream b m r
 
--- 
+group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
 
-data Groups :: * -> (* -> *) -> * -> *
+maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
 
--- instance Monad m => Functor (Groups o m)
--- instance Monad m => Applicative (Groups o m)
--- instance Monad m => Monad (Groups o m)
--- instance MonadIO m => MonadIO (Groups o m) 
--- instance MonadTrans (Groups o)
--- 
--- group :: (Monad m, Eq a) => Stream a m r -> Groups a m r
--- maps :: Monad m => (forall x. Stream a m x -> Stream b m x) -> Groups a m r -> Groups b m r
--- concats :: Groups a m r -> Stream a m r
+concats :: Groups a m r -> Stream a m r
 
 

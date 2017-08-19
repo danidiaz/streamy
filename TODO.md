@@ -9,14 +9,14 @@
     - takeWhileM :: Monad m => (a -> m Bool) -> Stream (Of a) m r -> Stream (Of a) m ()
 
 - Splitting and grouping functions (Streaming + Pipes only)
+    - group :: (Monad m, Eq a) => Stream (Of a) m r -> Stream (Stream (Of a) m) m r
+    - maps :: (Monad m, Functor f) => (forall x. f x -> g x) -> Stream f m r -> Stream g m r
+    - concats :: (Monad m, Functor f) => Stream (Stream f m) m r -> Stream f m r
     - splitAt :: (Monad m, Functor f) => Int -> Stream f m r -> Stream f m (Stream f m r)
     - split :: (Eq a, Monad m) => a -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - breaks :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - break :: Monad m => (a -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
     - breakWhen :: Monad m => (x -> a -> x) -> x -> (x -> b) -> (b -> Bool) -> Stream (Of a) m r -> Stream (Of a) m (Stream (Of a) m r)
-    - group :: (Monad m, Eq a) => Stream (Of a) m r -> Stream (Stream (Of a) m) m r
-    - maps :: (Monad m, Functor f) => (forall x. f x -> g x) -> Stream f m r -> Stream g m r
-    - concats :: (Monad m, Functor f) => Stream (Stream f m) m r -> Stream f m r
     - groupBy :: Monad m => (a -> a -> Bool) -> Stream (Of a) m r -> Stream (Stream (Of a) m) m r
     - chunksOf :: (Monad m, Functor f) => Int -> Stream f m r -> Stream (Stream f m) m r
     - intercalates :: (Monad m, Functor f) => Stream f m () -> Stream (Stream f m) m r -> Stream f m r 

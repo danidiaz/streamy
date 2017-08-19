@@ -15,7 +15,7 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     |                 | S | P | C |
     |-----------------|---|---|---|
     | Stream          | X | X | X |
-    | Groups          |   |   |   |
+    | Groups          | X | X | X |
 
 **Basic functions**
 
@@ -56,6 +56,7 @@ There are gaps in coverage in implementation of functions.  Below is a feature m
     |                 | S | P | C |
     |-----------------|---|---|---|
     | group           |   |   |   |
-    | groupBy         |   |   |   |
+    | maps            |   |   |   |
+    | concats         |   |   |   |
 
 

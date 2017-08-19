@@ -1,6 +1,9 @@
 {-# LANGUAGE RankNTypes #-}
+{-# language GeneralizedNewtypeDeriving #-}
 module Streamy.Conduit (
           Stream
+        , Groups
+        , WrappedGroups(..)
         , yield
         , each
         , toList
@@ -30,6 +33,8 @@ module Streamy.Conduit (
         , Streamy.Conduit.foldM_
         , Streamy.Conduit.scan
         , Streamy.Conduit.scanM
+--        , FreeF(..)
+--        , FreeT(..)
     ) where
 
 import qualified Conduit as C
@@ -41,9 +46,21 @@ import qualified Data.Foldable
 import Data.Functor (void)
 import Data.Tuple (swap)
 import Control.Applicative
+import Control.Monad
 import Control.Monad.Trans.Class
+import Control.Monad.IO.Class
 
 type Stream = C.ConduitM ()
+
+type Groups = WrappedGroups
+
+-- This newtype is necessary to avoid a
+-- "Illegal parameterized type synonym in implementation of abstract data." error.
+newtype WrappedGroups o m r = Groups { getGroups :: FreeT (C.ConduitM () o m) m r } 
+        deriving (Functor,Applicative,Monad,MonadIO)
+
+instance MonadTrans (WrappedGroups o) where
+    lift x = Groups (lift x)
 
 yield :: Monad m => o -> Stream o m ()
 yield = C.yield
@@ -160,3 +177,39 @@ scanM step begin done c = do
     let step' = \a s -> liftA2 (,) (step s a) (done s)
     C.fuseUpstream c (CL.mapAccumM step' begin' >>= lift . done >>= C.yield)
 
+-- Copied from the free package to avoid depending on it
+-- http://hackage.haskell.org/package/free-4.12.4/docs/src/Control-Monad-Trans-Free.html#FreeF
+data FreeF f a b = Pure a | Free (f b) deriving (Eq,Ord,Show,Read)
+
+instance Functor f => Functor (FreeF f a) where
+  fmap _ (Pure a)  = Pure a
+  fmap f (Free as) = Free (fmap f as)
+  {-# INLINE fmap #-}
+newtype FreeT f m a = FreeT { runFreeT :: m (FreeF f a (FreeT f m a)) }
+
+instance (Functor f, Monad m) => Functor (FreeT f m) where
+  fmap f (FreeT m) = FreeT (liftM f' m) where
+    f' (Pure a)  = Pure (f a)
+    f' (Free as) = Free (fmap (fmap f) as)
+
+instance (Functor f, Monad m) => Applicative (FreeT f m) where
+  pure a = FreeT (return (Pure a))
+  {-# INLINE pure #-}
+  (<*>) = ap
+  {-# INLINE (<*>) #-}
+
+instance (Functor f, Monad m) => Monad (FreeT f m) where
+  fail e = FreeT (fail e)
+  return = pure
+  {-# INLINE return #-}
+  FreeT m >>= f = FreeT $ m >>= \v -> case v of
+    Pure a -> runFreeT (f a)
+    Free w -> return (Free (fmap (>>= f) w))
+
+instance MonadTrans (FreeT f) where
+  lift = FreeT . liftM Pure
+  {-# INLINE lift #-}
+
+instance (Functor f, MonadIO m) => MonadIO (FreeT f m) where
+  liftIO = lift . liftIO
+  {-# INLINE liftIO #-}

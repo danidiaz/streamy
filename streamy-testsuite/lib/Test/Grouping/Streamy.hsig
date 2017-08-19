@@ -1,4 +1,4 @@
-signature Test.Common.Streamy (
+signature Test.Grouping.Streamy (
           Stream
         , Groups
         , yield

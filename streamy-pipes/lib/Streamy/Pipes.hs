@@ -1,5 +1,8 @@
+{-# language GeneralizedNewtypeDeriving #-}
 module Streamy.Pipes (
           Stream
+        , Groups
+        , WrappedGroups(..)
         , yield
         , toList
         , toList_
@@ -35,8 +38,23 @@ import qualified Data.List
 import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
 import qualified Pipes.Prelude as PP
+import qualified Pipes.Group as PG
+
+import Control.Monad
+import Control.Monad.Trans.Class
+import Control.Monad.IO.Class
 
 type Stream = Proxy X () ()
+
+type Groups = WrappedGroups
+
+-- This newtype is necessary to avoid a
+-- "Illegal parameterized type synonym in implementation of abstract data." error.
+newtype WrappedGroups o m r = Groups { getGroups :: PG.FreeT (P.Producer o m) m r } 
+        deriving (Functor,Applicative,Monad,MonadIO)
+
+instance MonadTrans (WrappedGroups o) where
+    lift x = Groups (lift x)
 
 yield :: Monad m => o -> Stream o m ()
 yield = P.yield

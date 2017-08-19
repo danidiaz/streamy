@@ -14,6 +14,9 @@ cabal-version:       >= 2
 library
   exposed-modules:     Streamy.Pipes
   build-depends:       base >= 4.10 && < 4.11   ,
-                       pipes >= 4.3.4
+                       pipes >= 4.3.4           ,
+                       pipes-group >= 1.0.7     ,
+                       transformers > 0.5       ,
+                       free >=3.2 && <5
   hs-source-dirs:      lib
   default-language:    Haskell2010
