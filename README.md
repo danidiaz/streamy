@@ -9,23 +9,6 @@ Haskell: [conduit](http://hackage.haskell.org/package/conduit), [pipes](http://h
 [str-sig](http://next.hackage.haskell.org:8080/package/str-sig) gives a common
 interface to String-like types.)
 
-The idea is that the abstract signature would cover some very basic
-functionality like yielding stuff downstream, but not library-specific features
-like:
-
-- pipe's bidirectionality.
-- conduit's integrated leftovers.
-- streaming's ability to use different functors.
-- any kind of single-stepping (too different across libraries).
-
-Things that *perhaps* could get included:
-
-- grouping operations?
-- bytestring-specific functionality?
-
-I don't plan to include a separate "applicative sink" datatype, but perhaps
-I will include a few fold functions.
-
 ## Structure of this project 
 
 - **streamy-sig** is the abstract signature.
@@ -48,10 +31,11 @@ signatures and bridge modules.
 
 ## Building instructions
 
-Built using [cabal-install](http://hackage.haskell.org/package/cabal-install)
-2.0.
+Built using [cabal 2.0](https://www.haskell.org/cabal/).
 
 > cabal new-build all --enable-tests
+
+> cabal new-test streamy-testsuite
 
 ## Where can I find further information on Backpack?
 
@@ -61,8 +45,11 @@ Edward Z. Yang's [thesis](https://github.com/ezyang/thesis/releases) is quite re
 ecosystem](http://blog.ezyang.com/2017/03/designing-the-backpack-signature-ecosystem/)
 explains the usefulness of signature thinning (see also section 2.7 of the thesis).
 
+[Backpack for deep learning](http://blog.ezyang.com/2017/08/backpack-for-deep-learning/).
+
 The [str-sig](http://next.hackage.haskell.org:8080/package/str-sig) signature
 package and its various implementations.
 
 I wrote a few Backpack tips & tricks
-[here](https://medium.com/@danidiaz/backpacking-tips-3adb727bb8f7).
+[here](https://medium.com/@danidiaz/backpacking-tips-3adb727bb8f7) and [here](https://medium.com/@danidiaz/backpacking-tips-ii-47fa86e5bf2).
+

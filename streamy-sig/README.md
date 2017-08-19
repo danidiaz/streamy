@@ -1,5 +1,32 @@
 # streamy-sig
 
+This package provides a *Streamy* signature with types and functions for
+working with effectful streams. Implementations of subsets of this signature
+can be found in *streamy-streaming*, *streamy-pipes* and *streamy-conduit*.
+
+The interface tries to follow the nomenclature and overall philosophy of the
+*streaming* package, for example eschewing a separate type for intermediate
+stages.
+
+The abstract signature covers basic functionality like:
+
+- Yielding elements downstream.
+- Mapping over streams.
+- Folding over streams.
+- Grouping operations that preserve streaming . Only a single level of grouping
+is supported. (Not universally implemented; check the feature matrix.)
+
+Library-specific features that are not covered:
+
+- *pipe*'s bidirectionality.
+- *conduit*'s integrated leftovers.
+- *streaming*'s ability to use different functors.
+- any kind of single-stepping (too different across libraries).
+
+The signature doesn't provide applicative sinks as a separate type, but the
+various fold functions allow interoperability with the folds in the *foldl*
+package.
+
 ## Feature matrix
 
 There are gaps in coverage in implementation of functions.  Below is a feature matrix saying which functions are supported by which libraries.
