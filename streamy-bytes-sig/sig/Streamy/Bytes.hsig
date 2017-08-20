@@ -37,7 +37,7 @@ instance Real ByteIndex
 instance Show ByteIndex
 instance Ix ByteIndex
 
-empty :: ByteStream m ()
+empty :: Monad m => ByteStream m ()
 
 singleton :: Monad m => SingleByte -> ByteStream m ()
 
@@ -49,7 +49,7 @@ fromChunks :: Monad m => Stream Bytes m r -> ByteStream m r
 
 toChunks :: Monad m => ByteStream m r -> Stream Bytes m r
 
-fromStrict :: Bytes -> ByteStream m ()
+fromStrict :: Monad m => Bytes -> ByteStream m ()
 
 toStrict :: Monad m => ByteStream m r -> m (Bytes,r)
 

@@ -44,7 +44,7 @@ type ByteStream = QB.ByteString
 
 type ByteIndex = Int64
 
-empty :: ByteStream m ()
+empty :: Monad m => ByteStream m ()
 empty = QB.empty
 
 singleton :: Monad m => SingleByte -> ByteStream m ()
@@ -62,7 +62,7 @@ fromChunks (Stream s) = QB.fromChunks s
 toChunks :: Monad m => ByteStream m r -> Stream Bytes m r
 toChunks bs = Stream (QB.toChunks bs)
 
-fromStrict :: Bytes -> ByteStream m ()
+fromStrict :: Monad m => Bytes -> ByteStream m ()
 fromStrict = QB.fromStrict
 
 toStrict :: Monad m => ByteStream m r -> m (Bytes,r)

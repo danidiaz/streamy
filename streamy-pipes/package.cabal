@@ -13,12 +13,15 @@ cabal-version:       >= 2
 
 library
   exposed-modules:     Streamy.Pipes
+                       Streamy.Pipes.Bytes
   build-depends:       base >= 4.10 && < 4.11   ,
+                       transformers > 0.5       ,
+                       free >=3.2 && <5         ,
+                       microlens >= 0.4.8.0     ,
+                       bytestring               ,
                        pipes >= 4.3.4           ,
                        pipes-group >= 1.0.7     ,
                        pipes-parse >= 3.0.8     ,
-                       transformers > 0.5       ,
-                       free >=3.2 && <5         ,
-                       microlens >= 0.4.8.0
+                       pipes-bytestring >= 2.1.6
   hs-source-dirs:      lib
   default-language:    Haskell2010
