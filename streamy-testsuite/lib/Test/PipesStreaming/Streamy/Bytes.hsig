@@ -1,0 +1,21 @@
+signature Test.PipesStreaming.Streamy.Bytes (
+      SingleByte
+    , Bytes
+    , ByteStream
+    , ByteIndex
+    , empty 
+    , singleton 
+    , pack 
+    , unpack 
+    , fromChunks 
+    , toChunks 
+    , fromStrict 
+    , toStrict 
+    , toStrict_ 
+    , splitAt 
+    , take 
+    , fromHandle 
+    , toHandle 
+) where
+
+import Prelude ()

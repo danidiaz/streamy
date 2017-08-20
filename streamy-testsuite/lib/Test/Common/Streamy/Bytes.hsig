@@ -1,0 +1,21 @@
+signature Test.Common.Streamy.Bytes (
+      SingleByte
+    , Bytes
+    , ByteStream
+    , ByteIndex
+    , empty 
+    , singleton 
+    , pack 
+    , unpack 
+    , fromChunks 
+    , toChunks 
+    , fromStrict 
+    , toStrict 
+    , toStrict_ 
+    -- , splitAt -- not in Conduit
+    , take 
+    , fromHandle 
+    , toHandle 
+) where
+
+import Prelude ()

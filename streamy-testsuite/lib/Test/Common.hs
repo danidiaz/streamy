@@ -7,6 +7,7 @@ import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
 
 import Test.Common.Streamy (Stream)
 import qualified Test.Common.Streamy as Y
+import qualified Test.Common.Streamy.Bytes as YB
 
 import Data.Foldable hiding (concat)
 import Control.Applicative
