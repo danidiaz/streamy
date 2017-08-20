@@ -53,6 +53,7 @@ suite =
         , testCase "fromStrict-pack-unpack" testBytesFromStrictPackUnpack
         , testCase "empty" testBytesEmpty 
         , testCase "singleton" testBytesSingleton
+        , testCase "take" testBytesTake
         , testCase "fromChunks-toChunks" testBytesFromChunksToChunks
         , testCase "fromHandle-toHandle" testFromHandleToHandle
         ]
@@ -257,6 +258,11 @@ testBytesSingleton :: Assertion
 testBytesSingleton = do
     res <- YB.toStrict_ $ YB.singleton 0 *> YB.singleton 1
     assertEqual "" (B.singleton 0 <> B.singleton 1) res
+
+testBytesTake :: Assertion
+testBytesTake = do
+    res <- YB.toStrict_ . YB.take 5 $ YB.pack (Y.each [0..10]) 
+    assertEqual "" (B.pack [0..4]) res
 
 testBytesFromChunksToChunks :: Assertion
 testBytesFromChunksToChunks = do

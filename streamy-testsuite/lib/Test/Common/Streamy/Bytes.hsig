@@ -25,3 +25,4 @@ import qualified Data.ByteString
 type Bytes = Data.ByteString.ByteString
 
 type SingleByte = Data.Word.Word8
+
