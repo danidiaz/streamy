@@ -1,0 +1,24 @@
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE RankNTypes #-}
+signature Streamy.Bytes where
+
+import Prelude (Functor,Applicative,Foldable,Enum,Eq,Integral,Num,Ord,Read,Real,Show,Bool)
+import Data.Ix (Ix)
+import Control.Monad (Monad)
+import Control.Monad.Trans.Class (MonadTrans)
+import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.Morph (MFunctor)
+
+import Streamy (Stream,Index)
+
+data Bytes :: *
+
+data ByteStream :: (* -> *) -> * -> *
+
+instance Monad m => Functor (ByteStream m)
+instance Monad m => Applicative (ByteStream m)
+instance Monad m => Monad (ByteStream m)
+instance MonadIO m => MonadIO (ByteStream m) 
+instance MonadTrans ByteStream
+instance MFunctor ByteStream 
+
