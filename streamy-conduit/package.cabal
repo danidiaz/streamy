@@ -13,8 +13,10 @@ cabal-version:       >= 2
 
 library
   exposed-modules:     Streamy.Conduit
+                       Streamy.Conduit.Bytes
   build-depends:       base >= 4.10 && < 4.11       ,
                        transformers > 0.5           ,
+                       bytestring                   ,
                        conduit >= 1.2.11            ,
                        conduit-combinators >= 1.1.1 
   hs-source-dirs:      lib
