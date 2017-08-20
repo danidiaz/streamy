@@ -26,27 +26,27 @@ matrix saying which functions are supported by which libraries.
 
     |                 | S | P | C |
     |-----------------|---|---|---|
-    | ByteStream      | X | X |   |
-    | SingleByte      | X | X |   |
-    | Bytes           | X | X |   |
-    | ByteIndex       | X | X |   |
+    | ByteStream      | X | X | X |
+    | SingleByte      | X | X | X |
+    | Bytes           | X | X | X |
+    | ByteIndex       | X | X | X |
 
 **Basic functions**
 
     |                 | S | P | C |
     |-----------------|---|---|---|
-    | empty           | X | X |   |  
-    | singleton       | X | X |   | 
-    | pack            | X | X |   | 
-    | unpack          | X | X |   | 
-    | fromChunks      | X | X |   | 
-    | toChunks        | X | X |   | 
-    | fromStrict      | X | X |   | 
-    | toStrict        | X | X |   | 
-    | toStrict_       | X | X |   | 
+    | empty           | X | X | X |  
+    | singleton       | X | X | X | 
+    | pack            | X | X | X | 
+    | unpack          | X | X | X | 
+    | fromChunks      | X | X | X | 
+    | toChunks        | X | X | X | 
+    | fromStrict      | X | X | X | 
+    | toStrict        | X | X | X | 
+    | toStrict_       | X | X | X | 
     | splitAt         | X | X |   | 
-    | take            | X | X |   | 
-    | fromHandle      | X | X |   | 
-    | toHandle        | X | X |   | 
+    | take            | X | X | X | 
+    | fromHandle      | X | X | X | 
+    | toHandle        | X | X | X | 
 
 
