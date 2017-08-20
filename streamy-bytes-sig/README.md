@@ -1,13 +1,15 @@
 # streamy-bytes-sig
 
-This package provides a *Streamy.Bytes* signature with types and functions for
-working with effectful byte streams. Implementations of subsets of this
-signature can be found in *streamy-streaming*, *streamy-pipes* and
-*streamy-conduit*.
+This signature package expands *streamy-sig* with a *Streamy.Bytes* module
+signature containing types and functions for working with effectful byte
+streams. Implementations of subsets of this signature can be found in
+*streamy-streaming*, *streamy-pipes* and *streamy-conduit*.
 
 The interface tries to follow the nomenclature and overall philosophy of the
 *streaming* package, for example eschewing a separate type for intermediate
 stages.
+
+If you don't need to work with byte streams, depend on *streamy-sig* alone.
 
 ## Feature matrix
 

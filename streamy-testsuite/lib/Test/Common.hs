@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Test.Common (suite) where
 
-import Test.Tasty (TestTree)
+import Test.Tasty (TestTree,testGroup)
 import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
 
 import Test.Common.Streamy (Stream)
@@ -10,6 +10,8 @@ import qualified Test.Common.Streamy as Y
 import qualified Test.Common.Streamy.Bytes as YB
 
 import Data.Foldable hiding (concat)
+import qualified Data.ByteString as B
+import Data.Monoid
 import Control.Applicative
 import Control.Monad
 import Control.Monad.IO.Class
@@ -17,6 +19,7 @@ import Control.Monad.Trans.Class
 import Control.Monad.Trans.Writer
 import Control.Concurrent.MVar
 import Data.IORef
+import System.IO
 
 suite :: [TestTree]
 suite = 
@@ -45,6 +48,14 @@ suite =
     , testCase "foldM_" testFoldM_
     , testCase "scan" testScan
     , testCase "scanM" testScanM
+    , testGroup "bytes" 
+        [ testCase "toStrict-toStrict_" testBytesToStrictToStrict_
+        , testCase "fromStrict-pack-unpack" testBytesFromStrictPackUnpack
+        , testCase "empty" testBytesEmpty 
+        , testCase "singleton" testBytesSingleton
+        , testCase "fromChunks-toChunks" testBytesFromChunksToChunks
+        , testCase "fromHandle-toHandle" testFromHandleToHandle
+        ]
     ]
 
 basic :: Assertion
@@ -223,3 +234,49 @@ testScanM = do
     res <- Y.toList_ . Y.scanM (\x i -> pure $ i : x) (pure []) (pure . map (*3)) $ Y.each [1::Int,2,3]
     assertEqual "foldresult" [[],[3],[6,3],[9,6,3]] res
 
+testBytesToStrictToStrict_ :: Assertion
+testBytesToStrictToStrict_ = do
+   (res,r) <- YB.toStrict $ YB.singleton 0 *> YB.singleton 1 *> return True
+   res_ <- YB.toStrict_ $ YB.singleton 0 *> YB.singleton 1
+   assertEqual "without value" (B.singleton 0 <> B.singleton 1) res
+   assertEqual "with value" (B.singleton 0 <> B.singleton 1) res
+   assertBool "value" r
+
+testBytesFromStrictPackUnpack :: Assertion
+testBytesFromStrictPackUnpack = do
+    let packed = B.pack [1..10]
+    res <- YB.toStrict_ . YB.pack . YB.unpack . YB.fromStrict $ packed
+    assertEqual "" packed res
+
+testBytesEmpty :: Assertion
+testBytesEmpty = do
+    res <- YB.toStrict_ $ YB.empty
+    assertEqual "" 0 (B.length res)
+
+testBytesSingleton :: Assertion
+testBytesSingleton = do
+    res <- YB.toStrict_ $ YB.singleton 0 *> YB.singleton 1
+    assertEqual "" (B.singleton 0 <> B.singleton 1) res
+
+testBytesFromChunksToChunks :: Assertion
+testBytesFromChunksToChunks = do
+    res <- YB.toStrict_ 
+         . YB.fromChunks 
+         . Y.map (\b -> B.pack [3] <> b)
+         . YB.toChunks 
+         $ YB.singleton 0 *> YB.singleton 1
+    assertEqual "" (B.singleton 3 <> B.singleton 0 <> B.singleton 3 <> B.singleton 1) res
+
+testFromHandleToHandle :: Assertion
+testFromHandleToHandle = do
+    ref <- newIORef False
+    r <- withFile "/dev/null" ReadMode $ \hread ->
+            withFile "/dev/null" WriteMode $ \hwrite ->
+                YB.toHandle hwrite $ YB.pack (Y.each [0..10]) 
+                                  *> YB.fromHandle hread 
+                                  *> YB.pack (Y.each [11..100])
+                                  *> lift (writeIORef ref True) 
+                                  *> return True
+    ref' <- readIORef ref
+    assertBool "effect" ref'
+    assertBool "result" r
