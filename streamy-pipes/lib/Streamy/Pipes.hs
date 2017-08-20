@@ -42,6 +42,8 @@ module Streamy.Pipes (
         , Streamy.Pipes.intercalates
         , Streamy.Pipes.yields
         , Streamy.Pipes.takes
+        , Streamy.Pipes.folds
+        , Streamy.Pipes.foldsM
         , Streamy.Pipes.splitAt
         , Streamy.Pipes.span
     ) where
@@ -184,6 +186,12 @@ yields producer = Groups $ liftF producer
 
 takes :: Monad m => Int -> Groups a m () -> Groups a m ()
 takes i (Groups gs) = Groups $ PG.takes i gs 
+
+folds :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Groups a m r -> Stream b m r
+folds step begin done (Groups gs) = PG.folds step begin done gs
+
+foldsM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Groups a m r -> Stream b m r
+foldsM step begin done (Groups gs) = PG.foldsM step begin done gs
 
 splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
 splitAt i producer = view (Pipes.Parse.splitAt i) producer

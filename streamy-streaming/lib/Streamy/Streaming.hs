@@ -43,6 +43,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.intercalates
         , Streamy.Streaming.yields
         , Streamy.Streaming.takes
+        , Streamy.Streaming.folds
+        , Streamy.Streaming.foldsM
         , Streamy.Streaming.splitAt
         , Streamy.Streaming.span
     ) where
@@ -82,7 +84,7 @@ each :: (Monad m, Foldable f) => f a -> Stream a m ()
 each x = Stream (Q.each x) 
 
 toList :: Monad m => Stream a m r -> m ([a],r)
-toList (Stream s) = toTup <$> Q.toList s
+toList (Stream s) = Q.lazily <$> Q.toList s
 
 toList_ :: Monad m => Stream a m () -> m [a]
 toList_ (Stream s) = Q.toList_ s
@@ -145,13 +147,13 @@ any_ :: Monad m => (a -> Bool) -> Stream a m () -> m Bool
 any_ f (Stream s) = Q.any_ f s
 
 fold :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m r -> m (b,r)
-fold step begin done (Stream s) = toTup <$> Q.fold step begin done s 
+fold step begin done (Stream s) = Q.lazily <$> Q.fold step begin done s 
 
 fold_ :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Stream a m () -> m b
 fold_ step begin done (Stream s) = Q.fold_ step begin done s 
 
 foldM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m r -> m (b,r)
-foldM step begin done (Stream s) = toTup <$> Q.foldM step begin done s 
+foldM step begin done (Stream s) = Q.lazily <$> Q.foldM step begin done s 
 
 foldM_ :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Stream a m () -> m b
 foldM_ step begin done (Stream s) = Q.foldM_ step begin done s 
@@ -186,13 +188,19 @@ yields (Stream s) = Groups $ Q.yields s
 takes :: Monad m => Int -> Groups a m () -> Groups a m ()
 takes i (Groups gs) = Groups $ Q.takes i gs 
 
+folds :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Groups a m r -> Stream b m r
+folds step begin done (Groups gs) = 
+    -- https://stackoverflow.com/questions/45773251/how-to-implement-folds-and-foldsm-from-pipes-group-for-the-streaming-package
+    Stream $ Q.mapped (Q.fold step begin done) gs
+
+foldsM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Groups a m r -> Stream b m r
+foldsM step begin done (Groups gs) = 
+    -- https://stackoverflow.com/questions/45773251/how-to-implement-folds-and-foldsm-from-pipes-group-for-the-streaming-package
+    Stream $ Q.mapped (Q.foldM step begin done) gs
+
 splitAt :: Monad m => Int -> Stream a m r -> Stream a m (Stream a m r)
 splitAt i (Stream s) = Stream <$> Stream (Q.splitAt i s)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f (Stream s) = Stream <$> Stream (Q.span f s)
-
---
-toTup :: Of a r -> (a,r)
-toTup = \(a :> r) -> (a,r)
 

@@ -108,6 +108,9 @@ yields :: Monad m => Stream a m r -> Groups a m r
 
 takes :: Monad m => Index -> Groups a m () -> Groups a m ()
 
+folds :: Monad m => (x -> a -> x) -> x -> (x -> b) -> Groups a m r -> Stream b m r
+foldsM :: Monad m => (x -> a -> m x) -> m x -> (x -> m b) -> Groups a m r -> Stream b m r
+
 splitAt :: Monad m => Index -> Stream a m r -> Stream a m (Stream a m r)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)

@@ -25,6 +25,8 @@ grouping =
     , testCase "intercalates" testIntercalates
     , testCase "yields" testYields
     , testCase "takes" testTakes
+    , testCase "folds" testFolds
+    , testCase "foldsM" testFoldsM
     , testCase "splitAt" testSplitAt
     , testCase "span" testSpan
     ]
@@ -73,3 +75,18 @@ testSpan = do
    assertEqual "" "abc" str1
    assertEqual "" "defg" str2
 
+testFolds :: Assertion
+testFolds = do
+   r <- Y.toList_ . Y.folds (flip (:)) [] id . Y.group $ Y.each "aabbcc"
+   assertEqual "" ["aa","bb","cc"] r
+   
+testFoldsM :: Assertion
+testFoldsM = do
+   ref <- newIORef False
+   r <- Y.toList_ 
+      . Y.foldsM (\x i -> pure (i:x)) (return []) (\x -> writeIORef ref True *> pure x) 
+      . Y.group 
+      $ Y.each "aabbcc"
+   assertEqual "" ["aa","bb","cc"] r
+   ref' <- readIORef ref
+   assertBool "effect" ref'
