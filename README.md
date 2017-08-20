@@ -12,6 +12,7 @@ interface to String-like types.)
 ## Structure of this project 
 
 - **streamy-sig** is the abstract signature.
+- **streamy-bytes-sig** expands *streamy-sig* with a module signature for byte streams.
 - **streamy-pipes** is the pipes "bridge" package.
 - **streamy-streaming** 
 - **streamy-conduit** 
