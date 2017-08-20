@@ -24,10 +24,27 @@ matrix saying which functions are supported by which libraries.
 
     |                 | S | P | C |
     |-----------------|---|---|---|
-    | ByteStream      | X | X | X |
+    | ByteStream      |   |   |   |
+    | SingleByte      |   |   |   |
+    | Bytes           |   |   |   |
+    | ByteIndex       |   |   |   |
 
 **Basic functions**
 
     |                 | S | P | C |
     |-----------------|---|---|---|
+    | empty           |   |   |   |  
+    | singleton       |   |   |   | 
+    | pack            |   |   |   | 
+    | unpack          |   |   |   | 
+    | fromChunks      |   |   |   | 
+    | toChunks        |   |   |   | 
+    | fromStrict      |   |   |   | 
+    | toStrict        |   |   |   | 
+    | toStrict_       |   |   |   | 
+    | splitAt         |   |   |   | 
+    | take            |   |   |   | 
+    | fromHandle      |   |   |   | 
+    | toHandle        |   |   |   | 
+
 
