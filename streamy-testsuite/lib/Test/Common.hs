@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Common (common) where
+module Test.Common (suite) where
 
 import Test.Tasty (TestTree)
 import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
@@ -17,8 +17,8 @@ import Control.Monad.Trans.Writer
 import Control.Concurrent.MVar
 import Data.IORef
 
-common :: [TestTree]
-common = 
+suite :: [TestTree]
+suite = 
     [ testCase "yield-chain-effects" basic 
     , testCase "each-toList" eachToList
     , testCase "each-toList_" eachToList_

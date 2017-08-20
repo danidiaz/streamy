@@ -1,12 +1,12 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Grouping (grouping) where
+module Test.PipesStreaming (suite) where
 
 import Test.Tasty (TestTree)
 import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
 
-import Test.Grouping.Streamy (Stream,Groups)
-import qualified Test.Grouping.Streamy as Y
+import Test.PipesStreaming.Streamy (Stream,Groups)
+import qualified Test.PipesStreaming.Streamy as Y
 
 import Data.Foldable hiding (concat)
 import Control.Applicative
@@ -17,8 +17,8 @@ import Control.Monad.Trans.Writer
 import Control.Concurrent.MVar
 import Data.IORef
 
-grouping :: [TestTree]
-grouping = 
+suite :: [TestTree]
+suite = 
     [ testCase "group-map-concats" basic 
     , testCase "groupBy" testGroupBy
     , testCase "chunksOf" testChunksOf

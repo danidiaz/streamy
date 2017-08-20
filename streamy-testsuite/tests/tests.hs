@@ -3,11 +3,13 @@ module Main where
 import Test.Tasty
 
 import Test.Pipes.Common
+import Test.Pipes.PipeStreaming
+
 import Test.Streaming.Common
+import Test.Streaming.PipeStreaming
+
 import Test.Conduit.Common
 
-import Test.Pipes.Grouping
-import Test.Streaming.Grouping
 
 main :: IO ()
 main = defaultMain tests
@@ -15,14 +17,15 @@ main = defaultMain tests
 tests :: TestTree
 tests = 
     testGroup "All" 
-    [ testGroup "Common" 
-      [ testGroup "Pipes" Test.Pipes.Common.common
-      , testGroup "Streaming" Test.Streaming.Common.common
-      , testGroup "Conduit" Test.Conduit.Common.common
+    [ testGroup "Pipes" 
+      [ testGroup "Common"         Test.Pipes.Common.suite
+      , testGroup "PipesStreaming" Test.Pipes.PipeStreaming.suite
       ]
-    , testGroup "Grouping" 
-      [ testGroup "Pipes" Test.Pipes.Grouping.grouping
-      , testGroup "Streaming" Test.Streaming.Grouping.grouping
+    , testGroup "Streaming" 
+      [ testGroup "Common"         Test.Streaming.Common.suite
+      , testGroup "PipesStreaming" Test.Streaming.PipeStreaming.suite
+      ]
+    , testGroup "Conduit" 
+      [ testGroup "Common"         Test.Conduit.Common.suite
       ]
     ]
-

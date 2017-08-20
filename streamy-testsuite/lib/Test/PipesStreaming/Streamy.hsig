@@ -1,4 +1,4 @@
-signature Test.Grouping.Streamy (
+signature Test.PipesStreaming.Streamy (
           Stream
         , Groups
         , Index
