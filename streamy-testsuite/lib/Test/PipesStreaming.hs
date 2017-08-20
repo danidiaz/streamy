@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Test.PipesStreaming (suite) where
 
-import Test.Tasty (TestTree)
+import Test.Tasty (TestTree,testGroup)
 import Test.Tasty.HUnit (testCase,Assertion,assertEqual,assertBool)
 
 import Test.PipesStreaming.Streamy (Stream,Groups)
@@ -10,6 +10,8 @@ import qualified Test.PipesStreaming.Streamy as Y
 import qualified Test.PipesStreaming.Streamy.Bytes as YB
 
 import Data.Foldable hiding (concat)
+import qualified Data.ByteString as B
+import Data.Monoid
 import Control.Applicative
 import Control.Monad
 import Control.Monad.IO.Class
@@ -30,6 +32,9 @@ suite =
     , testCase "foldsM" testFoldsM
     , testCase "splitAt" testSplitAt
     , testCase "span" testSpan
+    , testGroup "bytes" 
+        [ testCase "bytesSplitAt" testBytesSplitAt
+        ]
     ]
 
 basic :: Assertion
@@ -91,3 +96,11 @@ testFoldsM = do
    assertEqual "" ["aa","bb","cc"] r
    ref' <- readIORef ref
    assertBool "effect" ref'
+
+testBytesSplitAt :: Assertion
+testBytesSplitAt = do
+   (str1,r) <- YB.toStrict . YB.splitAt 5 $ YB.pack (Y.each [1..10])
+   str2 <- YB.toStrict_ r
+   assertEqual "" (B.pack [1..5]) str1
+   assertEqual "" (B.pack [6..10]) str2
+

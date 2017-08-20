@@ -19,3 +19,10 @@ signature Test.PipesStreaming.Streamy.Bytes (
 ) where
 
 import Prelude ()
+
+import qualified Data.Word
+import qualified Data.ByteString
+
+type Bytes = Data.ByteString.ByteString
+
+type SingleByte = Data.Word.Word8
