@@ -16,6 +16,7 @@ import qualified Data.ByteString as B
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
 import Data.String
+import Data.List
 import Data.Monoid
 import Control.Applicative
 import Control.Monad
@@ -246,7 +247,9 @@ testScanDecode = do
     let eurobytes = 
             fmap fromString ["This item"," has a 10"]
             ++
-            fmap B.singleton [0b11100010,0b10000010,0b10101100]
+            replicate 10 mempty
+            ++
+            Data.List.intersperse mempty (B.singleton <$> [0b11100010,0b10000010,0b10101100])
             ++
             fmap fromString [" price."]
         eurotext = T.pack "This item has a 10€ price."
