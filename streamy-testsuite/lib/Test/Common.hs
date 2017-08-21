@@ -1,5 +1,7 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE BinaryLiterals #-}
+
 module Test.Common (suite) where
 
 import Test.Tasty (TestTree,testGroup)
@@ -11,6 +13,9 @@ import qualified Test.Common.Streamy.Bytes as YB
 
 import Data.Foldable hiding (concat)
 import qualified Data.ByteString as B
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
+import Data.String
 import Data.Monoid
 import Control.Applicative
 import Control.Monad
@@ -47,6 +52,7 @@ suite =
     , testCase "foldM" testFoldM
     , testCase "foldM_" testFoldM_
     , testCase "scan" testScan
+    , testCase "scan-decode" testScanDecode
     , testCase "scanM" testScanM
     , testGroup "bytes" 
         [ testCase "toStrict-toStrict_" testBytesToStrictToStrict_
@@ -229,6 +235,23 @@ testScan :: Assertion
 testScan = do
     res <- Y.toList_ . Y.scan (flip (:)) [] (map (*3)) $ Y.each [1::Int,2,3]
     assertEqual "foldresult" [[],[3],[6,3],[9,6,3]] res
+
+utf8scan :: Monad m => Stream B.ByteString m r -> Stream T.Text m r
+utf8scan = Y.scan step (TE.streamDecodeUtf8 mempty) (\(TE.Some txt _ _) -> txt) 
+    where
+    step (TE.Some _ _ f) bytes = f bytes
+
+testScanDecode :: Assertion
+testScanDecode = do
+    let eurobytes = 
+            fmap fromString ["This item"," has a 10"]
+            ++
+            fmap B.singleton [0b11100010,0b10000010,0b10101100]
+            ++
+            fmap fromString [" price."]
+        eurotext = T.pack "This item has a 10€ price."
+    decoded <- Y.toList_ . utf8scan $ Y.each eurobytes
+    assertEqual "decoderesult" eurotext (mconcat decoded)
 
 testScanM :: Assertion
 testScanM = do
