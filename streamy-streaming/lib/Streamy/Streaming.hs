@@ -48,10 +48,10 @@ module Streamy.Streaming (
         , Streamy.Streaming.foldsM
         , Streamy.Streaming.splitAt
         , Streamy.Streaming.span
+        , delimit 
     ) where
 
 import Data.List.NonEmpty (NonEmpty(..))
-import qualified Data.List.NonEmpty as NE
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.IO.Class

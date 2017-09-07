@@ -4,6 +4,7 @@ signature Streamy where
 
 import Prelude (Functor,Applicative,Foldable,Enum,Eq,Integral,Num,Ord,Read,Real,Show,Bool)
 import Data.Ix (Ix)
+import Data.List.NonEmpty (NonEmpty)
 import Control.Monad (Monad)
 import Control.Monad.Trans.Class (MonadTrans)
 import Control.Monad.IO.Class (MonadIO)
@@ -115,3 +116,4 @@ splitAt :: Monad m => Index -> Stream a m r -> Stream a m (Stream a m r)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 
+delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r

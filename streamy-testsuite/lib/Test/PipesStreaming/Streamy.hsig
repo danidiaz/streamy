@@ -42,6 +42,7 @@ signature Test.PipesStreaming.Streamy (
         , foldsM
         , splitAt
         , span
+        , delimit
     ) where
 
 import Prelude () -- weird confusions otherwise

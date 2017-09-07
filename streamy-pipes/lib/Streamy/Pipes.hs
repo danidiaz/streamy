@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE BangPatterns #-}
 module Streamy.Pipes (
           Stream
         , Groups
@@ -46,9 +47,11 @@ module Streamy.Pipes (
         , Streamy.Pipes.foldsM
         , Streamy.Pipes.splitAt
         , Streamy.Pipes.span
+        , delimit 
     ) where
 
 import qualified Data.List
+import Data.List.NonEmpty (NonEmpty(..))
 import Pipes (Proxy,X,(>->))
 import qualified Pipes as P
 import qualified Pipes.Prelude as PP
@@ -198,4 +201,19 @@ splitAt i producer = view (Pipes.Parse.splitAt i) producer
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f producer = view (Pipes.Parse.span f) producer
+
+delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
+delimit step done state0 stream0 = Groups (PG.FreeT (return (PG.Free (advance state0 stream0))))
+  where 
+    layered = flip $ foldr $ \x c -> P.yield x *> c
+    divided = flip $ foldr $ \xs c -> return . PG.FreeT . return . PG.Free $ xs `layered` c
+    advance state stream = do
+        r <- lift $ PG.next stream -- use the effect constructor here?
+        case r of
+            Left r -> do
+                let (!headlist :| rest) = done state
+                headlist `layered` (rest `divided` (return (return r)))
+            Right (a,stream') -> do
+                let (!state', !headlist :| rest) = step state a
+                headlist `layered` (rest `divided` advance state' stream')
 
