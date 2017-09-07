@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE BangPatterns #-}
 module Streamy.Streaming (
           Stream
         , WrappedStream(..)
@@ -49,6 +50,8 @@ module Streamy.Streaming (
         , Streamy.Streaming.span
     ) where
 
+import Data.List.NonEmpty (NonEmpty(..))
+import qualified Data.List.NonEmpty as NE
 import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.IO.Class
@@ -57,6 +60,7 @@ import Control.Monad.Morph
 import Streaming (Of(..))
 import qualified Streaming as Q
 import qualified Streaming.Prelude as Q
+import qualified Streaming.Internal as QI
 
 type Stream = WrappedStream
 
@@ -203,4 +207,19 @@ splitAt i (Stream s) = Stream <$> Stream (Q.splitAt i s)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f (Stream s) = Stream <$> Stream (Q.span f s)
+
+delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
+delimit step done state0 (Stream stream0) = Groups (QI.Step (advance state0 stream0))
+  where 
+    layered = flip $ foldr $ \x c -> QI.Step $ x :> c
+    divided = flip $ foldr $ \xs c -> QI.Return . QI.Step $ xs `layered` c
+    advance state stream = do
+        r <- lift $ Q.next stream -- use the effect constructor here?
+        case r of
+            Left r -> do
+                let (!headlist :| rest) = done state
+                headlist `layered` (rest `divided` (QI.Return (QI.Return r)))
+            Right (a,stream') -> do
+                let (!state', !headlist :| rest) = step state a
+                headlist `layered` (rest `divided` advance state' stream')
 
