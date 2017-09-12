@@ -12,6 +12,7 @@ import qualified Test.PipesStreaming.Streamy.Bytes as YB
 import Data.Foldable hiding (concat)
 import qualified Data.ByteString as B
 import Data.Monoid
+import Data.List.NonEmpty (NonEmpty(..))
 import Control.Applicative
 import Control.Monad
 import Control.Monad.IO.Class
@@ -34,6 +35,9 @@ suite =
     , testCase "span" testSpan
     , testGroup "bytes" 
         [ testCase "bytesSplitAt" testBytesSplitAt
+        ]
+    , testGroup "delimit" 
+        [ testCase "delimit0" testDelimit0
         ]
     ]
 
@@ -103,4 +107,11 @@ testBytesSplitAt = do
    str2 <- YB.toStrict_ r
    assertEqual "" (B.pack [1..5]) str1
    assertEqual "" (B.pack [6..10]) str2
+
+testDelimit0 :: Assertion
+testDelimit0 = do
+    r <- Y.toList_ . Y.folds (flip (:)) [] id . isolating $ Y.each ['a'..'f']
+    assertEqual "" ["a","b","c","d","e","f"] r
+    where
+    isolating = Y.delimit (\() a -> ((),[] :| [[a]])) (\() -> [] :| []) () 
 

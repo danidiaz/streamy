@@ -312,3 +312,4 @@ testFromHandleToHandle = do
     ref' <- readIORef ref
     assertBool "effect" ref'
     assertBool "result" r
+
