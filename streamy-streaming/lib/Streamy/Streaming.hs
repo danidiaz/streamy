@@ -209,8 +209,11 @@ span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f (Stream s) = Stream <$> Stream (Q.span f s)
 
 delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
-delimit step done state0 (Stream stream0) = Groups (QI.Step (advance state0 stream0))
+delimit step done state0 (Stream stream0) = Groups initial
   where 
+    initial = do
+        r <- lift $ Q.effects (advance state0 stream0)
+        r
     layered = flip $ foldr $ \x c -> QI.Step $ x :> c
     divided = flip $ foldr $ \xs c -> QI.Return . QI.Step $ xs `layered` c
     advance state stream = do

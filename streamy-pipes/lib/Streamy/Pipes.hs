@@ -203,8 +203,12 @@ span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f producer = view (Pipes.Parse.span f) producer
 
 delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
-delimit step done state0 stream0 = Groups (PG.FreeT (return (PG.Free (advance state0 stream0))))
+--delimit step done state0 stream0 = Groups (PG.FreeT (return (PG.Free (advance state0 stream0))))
+delimit step done state0 stream0 = Groups initial
   where 
+    initial = do
+        r <- lift $ P.runEffect $ advance state0 stream0 >-> PP.drain
+        r
     layered = flip $ foldr $ \x c -> P.yield x *> c
     divided = flip $ foldr $ \xs c -> return . PG.FreeT . return . PG.Free $ xs `layered` c
     advance state stream = do
