@@ -96,4 +96,5 @@ matrix saying which functions are supported by which libraries.
     | foldsM          | X | X |   |
     | splitAt         | X | X |   |
     | span            | X | X |   |
+    | delimit         | X | X |   |
 

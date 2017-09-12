@@ -208,7 +208,7 @@ splitAt i (Stream s) = Stream <$> Stream (Q.splitAt i s)
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 span f (Stream s) = Stream <$> Stream (Q.span f s)
 
-delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
+delimit :: Monad m => (x -> a -> (x, NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
 delimit step done state0 (Stream stream0) = Groups initial
   where 
     initial = do

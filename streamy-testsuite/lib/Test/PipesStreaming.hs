@@ -38,6 +38,8 @@ suite =
         ]
     , testGroup "delimit" 
         [ testCase "delimit0" testDelimit0
+        , testCase "delimit1" testDelimit1
+        , testCase "chunksOf" testDelimitChunksOf
         ]
     ]
 
@@ -114,4 +116,28 @@ testDelimit0 = do
     assertEqual "" ["a","b","c","d","e","f"] r
     where
     isolating = Y.delimit (\() a -> ((),[] :| [[a]])) (\() -> [] :| []) () 
+
+testDelimit1 :: Assertion
+testDelimit1 = do
+    r <- Y.toList_ . Y.folds (flip (:)) [] id . isolating $ Y.each ['a'..'f']
+    assertEqual "" ["a",[],"b",[],"c",[],"d",[],"e",[],"f",[]] r
+    where
+    isolating = Y.delimit (\() a -> ((),[] :| [[a],[]])) (\() -> [] :| []) () 
+
+testDelimitChunksOf :: Assertion
+testDelimitChunksOf = do
+    r <- Y.toList_ . Y.folds (flip (:)) [] id . chunksOf 3 $ Y.each ['a'..'h']
+    assertEqual "" ["abc","def","gh"] r
+    where
+    chunksOf n = 
+        Y.delimit (\rs a -> 
+                    let rs' = a : rs 
+                        len = length rs'
+                    in if len < n
+                       then (rs', [] :| [])
+                       else ([], [] :| [rs']))
+                  (\rs -> case rs of
+                    [] -> [] :| []
+                    _  -> [] :| [rs]) 
+                  []
 

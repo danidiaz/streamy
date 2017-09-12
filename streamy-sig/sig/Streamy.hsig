@@ -116,4 +116,28 @@ splitAt :: Monad m => Index -> Stream a m r -> Stream a m (Stream a m r)
 
 span :: Monad m => (a -> Bool) -> Stream a m r -> Stream a m (Stream a m r)
 
-delimit :: Monad m => (x -> a -> (x,NonEmpty [b])) -> (x -> NonEmpty [b]) -> x -> Stream a m r -> Groups b m r
+{-| Find groups in a stream while keeping an internal state.
+
+    For each step, a new state is returned along with a nonempty list of lists.
+    The head of the nonempty represents elements which continue a previously
+    started group. The tail of the nonempty represents new groups that have
+    been found in the current step. The last group in the tail will be
+    continued by the next step.
+
+    You should start a group in the tail of the nonempty before returning
+    anything in the head of the nonempty; otherwise the elements will be
+    discarded.
+
+    Trivial example that puts each incoming element in its own single-element
+    group:
+
+    > delimit (\() a -> ((), [] :| [[a]])) (\() -> [] :| []) () 
+
+-}
+delimit :: Monad m 
+        => (x -> a -> (x, NonEmpty [b]))    -- ^ step returning new state, continuation of previous group, new groups
+        -> (x -> NonEmpty [b])              -- ^ final step
+        -> x                                -- ^ initial state
+        -> Stream a m r 
+        -> Groups b m r
+
