@@ -112,32 +112,29 @@ testBytesSplitAt = do
 
 testDelimit0 :: Assertion
 testDelimit0 = do
-    r <- Y.toList_ . Y.folds (flip (:)) [] id . isolating $ Y.each ['a'..'f']
+    r <- Y.toList_ . Y.folds (flip (:)) [] reverse . isolating $ Y.each ['a'..'f']
     assertEqual "" ["a","b","c","d","e","f"] r
     where
     isolating = Y.delimit (\() a -> ((),[] :| [[a]])) (\() -> [] :| []) () 
 
 testDelimit1 :: Assertion
 testDelimit1 = do
-    r <- Y.toList_ . Y.folds (flip (:)) [] id . isolating $ Y.each ['a'..'f']
+    r <- Y.toList_ . Y.folds (flip (:)) [] reverse . isolating $ Y.each ['a'..'f']
     assertEqual "" ["a",[],"b",[],"c",[],"d",[],"e",[],"f",[]] r
     where
     isolating = Y.delimit (\() a -> ((),[] :| [[a],[]])) (\() -> [] :| []) () 
 
+-- https://www.joachim-breitner.de/blog/620-Constructing_a_list_in_a_Monad
 testDelimitChunksOf :: Assertion
 testDelimitChunksOf = do
-    r <- Y.toList_ . Y.folds (flip (:)) [] id . chunksOf 3 $ Y.each ['a'..'h']
+    r <- Y.toList_ . Y.folds (flip (:)) [] reverse . chunksOf 3 $ Y.each ['a'..'h']
     assertEqual "" ["abc","def","gh"] r
     where
-    chunksOf n = 
-        Y.delimit (\rs a -> 
-                    let rs' = a : rs 
-                        len = length rs'
-                    in if len < n
-                       then (rs', [] :| [])
-                       else ([], [] :| [rs']))
-                  (\rs -> case rs of
-                    [] -> [] :| []
-                    _  -> [] :| [rs]) 
-                  []
+    chunksOf n0 = 
+        Y.delimit (\n a -> 
+                    if n > 0
+                    then (pred n, [a] :| [])
+                    else (pred n0, [] :| [[a]]))
+                  (\_ -> [] :| [])
+                  0
 
