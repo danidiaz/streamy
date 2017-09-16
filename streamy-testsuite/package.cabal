@@ -37,6 +37,7 @@ library              test-pipes-streaming
         base >= 4.10 && < 4.11     ,
         transformers > 0.5         ,
         bytestring                 ,
+        text >= 1.2                ,
         tasty >= 0.10.1.1          ,
         tasty-hunit >= 0.9.2       ,
         streamy-bytes-sig == 0.1.0.0     

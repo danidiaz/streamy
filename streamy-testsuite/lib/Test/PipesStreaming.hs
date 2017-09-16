@@ -11,6 +11,7 @@ import qualified Test.PipesStreaming.Streamy.Bytes as YB
 
 import Data.Foldable hiding (concat)
 import qualified Data.ByteString as B
+import qualified Data.Text as T
 import Data.Monoid
 import Data.List.NonEmpty (NonEmpty(..))
 import Control.Applicative
@@ -137,4 +138,17 @@ testDelimitChunksOf = do
                     else (pred n0, [] :| [[a]]))
                   (\_ -> [] :| [])
                   0
+
+textlines :: Stream T.Text IO r -> Groups T.Text IO r 
+textlines =
+    Y.delimit (\nl txt ->
+                  if T.null txt
+                     then (nl,pure [])
+                     else let nl' = T.last txt == '\n'
+                          in case (nl,T.lines txt) of
+                              (True,ls)    -> (nl', []  :| map pure ls)
+                              (False,l:ls) -> (nl', [l] :| map pure ls)
+                              (_,[])       -> error "never happens")
+              (\_ -> pure [])
+              True
 
